@@ -12,7 +12,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum OrderStatusEnum implements CodeEnum {
     NEW(0, "新下单"),
-    FINISHED(1, "已结单"),
+    FINISHED(1, "已接单"),
     CANCEL(2, "已取消");
 
     //状态码
