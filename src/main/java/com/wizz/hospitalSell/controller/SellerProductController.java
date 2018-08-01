@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 卖家端商品
+ * 卖家商品有关
  * Created By Cx On 2018/7/26 12:08
  */
 @RequestMapping("/seller/product")
@@ -44,97 +44,96 @@ public class SellerProductController {
      * 商品列表页面
      */
     @GetMapping("list")
-    public ModelAndView list(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size){
-        Map<String,Object> m = new HashMap<>();
-        Page<ProductInfo> productInfoPage = productInfoService.findAll(PageRequest.of(page - 1,size));
-        m.put("productInfoPage",productInfoPage);
-        m.put("currentPage",page);
-        m.put("size",size);
-        return new ModelAndView("/product/list",m);
+    public ModelAndView list(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size) {
+        Map<String, Object> m = new HashMap<>();
+        Page<ProductInfo> productInfoPage = productInfoService.findAll(PageRequest.of(page - 1, size));
+        m.put("productInfoPage", productInfoPage);
+        m.put("currentPage", page);
+        m.put("size", size);
+        return new ModelAndView("/product/list", m);
     }
 
     /**
      * 商品上架
      */
     @GetMapping("/on_sale")
-    public ModelAndView onSale(String productId){
-        Map<String ,Object> m = new HashMap<>();
-        m.put("url","/sell/seller/product/list");
+    public ModelAndView onSale(String productId) {
+        Map<String, Object> m = new HashMap<>();
+        m.put("url", "/seller/product/list");
         try {
             productInfoService.onSale(productId);
-        }catch (SellException e){
+        } catch (SellException e) {
             log.error("[商品上架]上架失败");
-            m.put("msg",e.getMessage());
-            return new ModelAndView("/common/error",m);
+            m.put("msg", e.getMessage());
+            return new ModelAndView("/common/error", m);
         }
-        return new ModelAndView("/common/success",m);
+        return new ModelAndView("/common/success", m);
     }
 
     /**
      * 商品下架
      */
     @GetMapping("/off_sale")
-    public ModelAndView offSale(String productId){
-        Map<String ,Object> m = new HashMap<>();
-        m.put("url","/sell/seller/product/list");
+    public ModelAndView offSale(String productId) {
+        Map<String, Object> m = new HashMap<>();
+        m.put("url", "/seller/product/list");
         try {
             productInfoService.offSale(productId);
-        }catch (SellException e){
+        } catch (SellException e) {
             log.error("[商品下架]下架失败");
-            m.put("msg",e.getMessage());
-            return new ModelAndView("/common/error",m);
+            m.put("msg", e.getMessage());
+            return new ModelAndView("/common/error", m);
         }
-        return new ModelAndView("/common/success",m);
+        return new ModelAndView("/common/success", m);
     }
 
     /**
      * 新增/修改商品页面
      */
     @GetMapping("/index")
-    public ModelAndView index(@RequestParam(required = false) String productId){
-        Map<String,Object> m = new HashMap<>();
-        if (!StringUtils.isEmpty(productId)){
+    public ModelAndView index(@RequestParam(required = false) String productId) {
+        Map<String, Object> m = new HashMap<>();
+        if (!StringUtils.isEmpty(productId)) {
             //如果Id不为空则为修改商品操作
             ProductInfo productInfo = productInfoService.findOne(productId);
-            m.put("productInfo",productInfo);
+            m.put("productInfo", productInfo);
         }
         List<ProductCategory> categories = categoryService.findAll();
-        m.put("categories",categories);
-        return new ModelAndView("/product/index",m);
+        m.put("categories", categories);
+        return new ModelAndView("/product/index", m);
     }
 
     /**
      * 保存/修改操作
      */
     @PostMapping("/save")
-    public ModelAndView save(@Valid ProductForm productForm, BindingResult bindingResult){
+    public ModelAndView save(@Valid ProductForm productForm, BindingResult bindingResult) {
         Map<String, Object> m = new HashMap<>();
-        m.put("url","/sell/seller/product/list");
-        if (bindingResult.hasErrors()){
+        m.put("url", "/seller/product/list");
+        if (bindingResult.hasErrors()) {
             //如果参数校验失败
-            log.error("【保存/修改商品】操作参数不正确，productForm={}",productForm);
-            m.put("msg",bindingResult.getFieldError().getDefaultMessage());
-            return new ModelAndView("common/error",m);
+            log.error("【保存/修改商品】操作参数不正确，productForm={}", productForm);
+            m.put("msg", bindingResult.getFieldError().getDefaultMessage());
+            return new ModelAndView("common/error", m);
         }
 
         try {
             ProductInfo productInfo = new ProductInfo();
-            if (StringUtils.isEmpty(productForm.getProductId())){
+            if (StringUtils.isEmpty(productForm.getProductId())) {
                 //如果id为空/不存在，则说明是新增操作
                 productForm.setProductId(KeyUtil.genUniqueKey());
-            }
-            else {
+            } else {
                 //否则为修改操作
                 productInfo = productInfoService.findOne(productForm.getProductId());
             }
-            BeanUtils.copyProperties(productForm,productInfo);
+            BeanUtils.copyProperties(productForm, productInfo);
             productInfoService.save(productInfo);
-        }catch (SellException e){
+        } catch (SellException e) {
             log.error("【保存/修改商品】访问数据库失败");
-            m.put("msg",e.getMessage());
-            return new ModelAndView("common/error",m);
+            m.put("msg", e.getMessage());
+            return new ModelAndView("common/error", m);
         }
-        return new ModelAndView("common/success",m);
+        return new ModelAndView("common/success", m);
     }
 
 }

@@ -6,6 +6,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 /**
+ * 类目表单
  * Created By Cx On 2018/7/27 14:43
  */
 @Data

@@ -25,13 +25,13 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 卖家用户有关
+ * 用户有关
  * Created By Cx On 2018/7/30 9:45
  */
 @Controller
 @Slf4j
-@RequestMapping("/seller")
-public class SellerUserController {
+@RequestMapping("/user")
+public class UserController {
 
     @Autowired
     UserService userService;
@@ -41,15 +41,18 @@ public class SellerUserController {
     ProjectConfig projectConfig;
 
 
+    /**
+     * 用户登录路由
+     */
     @GetMapping("/login")
-    public ModelAndView login(String openid, HttpServletResponse response){
-        Map<String,Object> m = new HashMap<>();
-        m.put("url","/sell/seller/order/list");
+    public ModelAndView login(String username, String password, HttpServletResponse response) {
+        Map<String, Object> m = new HashMap<>();
+        m.put("url", "/seller/order/list");
         //1.在数据库中查询该用户是否存在
-        UserInfo userInfo = userService.findSellerInfoByOpenId(openid);
-        if (userInfo == null){
+        UserInfo userInfo = userService.findUserInfoByNameAndPass(username,password);
+        if (userInfo == null) {
             m.put("msg", ResultEnum.LOGIN_FAIL.getMsg());
-            return new ModelAndView("common/error",m);
+            return new ModelAndView("common/error", m);
         }
 
         //2.设置token 到 redis
@@ -59,25 +62,28 @@ public class SellerUserController {
         Integer expire = RedisConstant.EXPIRE;
         //opsForValue表示对某个值进行操作，set参数：key、value、过期时间、时间单位
         //String.format(RedisConstant.TOKEN_PREFIX,token):将token按前者的格式，格式化
-        redisTemplate.opsForValue().set(String.format(RedisConstant.TOKEN_PREFIX,token),openid,expire, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(String.format(RedisConstant.TOKEN_PREFIX, token), username+password, expire, TimeUnit.SECONDS);
 
         //3.设置token 到 cookie
-        CookieUtil.setCookie(response, CookieConstant.TOKEN,token,CookieConstant.EXPIRE);
-        return new ModelAndView("redirect:"+ projectConfig.getSell() + "/sell/seller/order/list");
+        CookieUtil.setCookie(response, CookieConstant.TOKEN, token, CookieConstant.EXPIRE);
+        return new ModelAndView("redirect:" + projectConfig.getSell() + "/seller/order/list");
     }
 
+    /**
+     * 用户登出路由
+     */
     @GetMapping("/logout")
-    public ModelAndView logout(HttpServletRequest request, HttpServletResponse response){
-        Map<String,Object> m = new HashMap<>();
+    public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> m = new HashMap<>();
         //获取cookie
-        Cookie cookie = CookieUtil.getCookie(request,CookieConstant.TOKEN);
-        if (cookie != null){
+        Cookie cookie = CookieUtil.getCookie(request, CookieConstant.TOKEN);
+        if (cookie != null) {
             //若cookie存在，清除redis和cookie
-            redisTemplate.opsForValue().getOperations().delete(String.format(RedisConstant.TOKEN_PREFIX,cookie.getValue()));
-            CookieUtil.setCookie(response,CookieConstant.TOKEN,null,0);
+            redisTemplate.opsForValue().getOperations().delete(String.format(RedisConstant.TOKEN_PREFIX, cookie.getValue()));
+            CookieUtil.setCookie(response, CookieConstant.TOKEN, null, 0);
         }
-        m.put("msg",ResultEnum.LOGOUT_SUCCESS.getMsg());
-        m.put("url","/sell/seller/order/list");
-        return new ModelAndView("common/success",m);
+        m.put("msg", ResultEnum.LOGOUT_SUCCESS.getMsg());
+        m.put("url", "/seller/order/list");
+        return new ModelAndView("common/success", m);
     }
 }

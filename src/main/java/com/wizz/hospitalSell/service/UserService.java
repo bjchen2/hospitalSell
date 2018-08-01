@@ -12,5 +12,7 @@ public interface UserService {
     /**
      * 根据用户的openid查询用户信息
      */
-    UserInfo findSellerInfoByOpenId(String openid);
+    UserInfo findUserInfoByOpenId(String openid);
+
+    UserInfo findUserInfoByNameAndPass(String username, String password);
 }

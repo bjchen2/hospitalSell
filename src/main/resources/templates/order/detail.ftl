@@ -54,8 +54,8 @@
                         <#--仅新下单状态显示这两个按钮-->
                     <#if orderDto.orderStatus == 0>
                         <div class="col-md-12 column">
-                            <a href="/sell/seller/order/finish?orderId=${orderDto.orderId}" type="button" class="btn btn-default btn-primary">完结订单</a>
-                            <a href="/sell/seller/order/cancel?orderId=${orderDto.orderId}" type="button" class="btn btn-default btn-danger">取消订单</a>
+                            <a href="/seller/order/finish?orderId=${orderDto.orderId}" type="button" class="btn btn-default btn-primary">完结订单</a>
+                            <a href="/seller/order/cancel?orderId=${orderDto.orderId}" type="button" class="btn btn-default btn-danger">取消订单</a>
                         </div>
                     </#if>
                         </div>

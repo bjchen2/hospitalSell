@@ -39,13 +39,13 @@
                                 <td>${productInfo.categoryType}</td>
                                 <td>${productInfo.createTime}</td>
                                 <td>${productInfo.updateTime}</td>
-                                <td><a href="/sell/seller/product/index?productId=${productInfo.productId}">修改</a></td>
+                                <td><a href="/seller/product/index?productId=${productInfo.productId}">修改</a></td>
                                 <td>
                                     <#if productInfo.productStatus == 0>
                                         <#--如果商品在架上-->
-                                        <a href="/sell/seller/product/off_sale?productId=${productInfo.productId}">下架</a>
+                                        <a href="/seller/product/off_sale?productId=${productInfo.productId}">下架</a>
                                     <#else>
-                                        <a href="/sell/seller/product/on_sale?productId=${productInfo.productId}">上架</a>
+                                        <a href="/seller/product/on_sale?productId=${productInfo.productId}">上架</a>
                                     </#if>
                                 </td>
                             </tr>
@@ -58,21 +58,21 @@
                             <#if currentPage lte 1>
                                 <li class="disabled"><a href="#">上一页</a></li>
                             <#else>
-                                <li><a href="/sell/seller/product/list?page=${currentPage-1}&size=${size}">上一页</a></li>
+                                <li><a href="/seller/product/list?page=${currentPage-1}&size=${size}">上一页</a></li>
                             </#if>
                             <#--0..orderDtoPage.getTotalPages()表示一个0到orderDtoPage.getTotalPages()的list-->
                             <#list 1..productInfoPage.getTotalPages() as index>
                                 <#if currentPage == index>
                                     <li class="disabled"><a href="#">${index}</a></li>
                                 <#else>
-                                    <li><a href="/sell/seller/product/list?page=${index}&size=${size}">${index}</a></li>
+                                    <li><a href="/seller/product/list?page=${index}&size=${size}">${index}</a></li>
                                 </#if>
                             </#list>
                             <#--lte表示小于等于，gte表示大于等于-->
                             <#if currentPage gte productInfoPage.getTotalPages()>
                                 <li class="disabled"><a href="#">下一页</a></li>
                             <#else>
-                                <li><a href="/sell/seller/product/list?page=${currentPage+1}&size=${size}">下一页</a></li>
+                                <li><a href="/seller/product/list?page=${currentPage+1}&size=${size}">下一页</a></li>
                             </#if>
                             </ul>
                         </div>
