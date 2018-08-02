@@ -1,6 +1,9 @@
 package com.wizz.hospitalSell.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -11,7 +14,9 @@ import java.util.Date;
  * Created By Cx On 2018/8/1 22:37
  */
 @Entity
-@Table(name="",schema = "")//两个参数分别为表名称和数据库名称。
+@DynamicInsert
+@Data
+@AllArgsConstructor
 public class AdminInfo {
     //管理员id
     @Id
@@ -26,43 +31,5 @@ public class AdminInfo {
 
     //注册时间
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//使用这个注解，框架自动将前台发来的日期转化为Date类型。
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")//将数据库里面查到的日期自动的转化成string类型。
     private Date createTime;
-
-
-    public Integer getAdiminId() {
-        return adiminId;
-    }
-
-    public void setAdiminId(int adiminId) {
-
-        this.adiminId = adiminId;
-    }
-
-    public String getAdminName() {
-
-        return adminName;
-    }
-
-    public void setAdminName(String adminName) {
-
-        this.adminName = adminName;
-    }
-
-    public String getAdminPass() {
-
-        return adminPass;
-    }
-
-    public void setAdminPass(String adminPass) {
-        this.adminPass = adminPass;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
 }
