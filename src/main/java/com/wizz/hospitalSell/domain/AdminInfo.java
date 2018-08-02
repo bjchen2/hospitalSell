@@ -16,20 +16,24 @@ import java.util.Date;
 @Entity
 @DynamicInsert
 @Data
-@AllArgsConstructor
 public class AdminInfo {
     //管理员id
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)//JPA提供四种方法，自增性用identity.
     private Integer adiminId;//integer是int的封装类，为什么要用integer来存储。
-
     //管理员用户名
     private String adminName;
-
     //管理员密码
     private String adminPass;
-
     //注册时间
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//使用这个注解，框架自动将前台发来的日期转化为Date类型。
     private Date createTime;
+
+    public AdminInfo(String adminName, String adminPass) {
+        this.adminName = adminName;
+        this.adminPass = adminPass;
+    }
+
+    public AdminInfo() {
+    }
 }

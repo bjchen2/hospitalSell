@@ -22,11 +22,6 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public Page<OrderDto> findList(String openId, Pageable pageable) {
-        return null;
-    }
-
-    @Override
     public Page<OrderDto> findList(Pageable pageable) {
         return null;
     }
@@ -41,8 +36,4 @@ public class OrderServiceImpl implements OrderService{
         return null;
     }
 
-    @Override
-    public OrderDto paid(OrderDto orderDto) {
-        return null;
-    }
 }

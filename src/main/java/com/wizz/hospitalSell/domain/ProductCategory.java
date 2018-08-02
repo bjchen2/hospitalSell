@@ -18,7 +18,6 @@ import java.util.Date;
  */
 @Entity
 @Data
-@AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
 public class ProductCategory {
@@ -44,7 +43,6 @@ public class ProductCategory {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
     //最近新改时间
-
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 

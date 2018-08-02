@@ -15,4 +15,9 @@ public interface RedisConstant {
      * redis过期时间，2小时，单位:秒
      */
     Integer EXPIRE = 7200;
+
+    /**
+     * 记住密码选项时，redis过期时间，10天，单位:秒
+     */
+    Integer REMEMBER = 864000;
 }

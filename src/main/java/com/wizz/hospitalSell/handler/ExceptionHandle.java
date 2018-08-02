@@ -28,9 +28,8 @@ public class ExceptionHandle {
 
     //拦截登录异常,若检验redis和cookie没有正确的登录值，则跳转回登录界面
     @ExceptionHandler(SellerAuthorizeException.class)
-    public ModelAndView handleAuthorizeException() throws UnsupportedEncodingException {
-        //TODO 不能用redirect，中文会乱码
-        return new ModelAndView("forward:".concat("/user/index?error=").concat(new String("用户名或密码错误".getBytes(),"utf-8")));
+    public ModelAndView handleAuthorizeException() {
+        return new ModelAndView("redirect:".concat("/user/index"));
     }
 
     @ExceptionHandler(SellException.class)

@@ -18,7 +18,6 @@ import java.util.Date;
  * Created By Cx On 2018/7/27 18:49
  */
 @Data
-@AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
 public class UserInfo {
@@ -37,7 +36,6 @@ public class UserInfo {
     //创建时间
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
-
     //最近修改时间
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;

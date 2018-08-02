@@ -20,7 +20,7 @@
                 <div class="form-group">
                     <#--如果error信息存在，说明登录失败-->
                     <#if error??>
-                        <p class="text-danger">${error}</p>
+                        <p class="text-danger">登录失败，账号或密码错误</p>
                     </#if>
                 </div>
                 <div class="checkbox">
@@ -28,6 +28,7 @@
                 </div>
                 <button type="submit" class="btn btn-default">登录</button>
             </form>
+            <button type="button" class="btn btn-default" href="">添加新管理员</button>
         </div>
     </div>
 </div>

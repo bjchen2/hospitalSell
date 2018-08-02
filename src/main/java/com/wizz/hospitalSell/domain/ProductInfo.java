@@ -16,7 +16,6 @@ import java.util.Date;
 @Entity
 @Table
 @Data
-@AllArgsConstructor
 public class ProductInfo {
     //类目id
     @Id
@@ -26,11 +25,9 @@ public class ProductInfo {
     private String categoryName;
     //类目编号
     private Integer categoryType;
-
     //创建时间
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
-
     //最近修改时间
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;

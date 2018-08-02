@@ -15,6 +15,11 @@ public interface AdminService {
     Boolean isAdminExist(AdminInfo adminInfo);
 
     /**
+     * 查询管理员账号是否存在
+     */
+    Boolean isAdminNameExist(String adminName);
+
+    /**
      * 创建管理员
      */
     AdminInfo create(AdminInfo AdminInfo);

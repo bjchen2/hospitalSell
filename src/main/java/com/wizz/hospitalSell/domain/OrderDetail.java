@@ -28,11 +28,10 @@ public class OrderDetail {
     //商品单价
     private BigDecimal productPrice;//用什么数据类型来进行存储不确定？double够么？
     //商品数量
-
     private Integer productQuantity;
     //创建时间
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date create_time;
+    private Date createTime;
 
 
 }

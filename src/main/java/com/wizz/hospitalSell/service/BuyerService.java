@@ -5,6 +5,7 @@ import com.wizz.hospitalSell.dto.OrderDto;
 
 /**
  * 买家端订单有关（微信端操作）
+ * TODO 不用写，后期迭代再加
  * Created By Cx On 2018/6/15 19:24
  */
 public interface BuyerService {

@@ -20,7 +20,6 @@ import java.util.Date;
 @DynamicInsert
 @DynamicUpdate
 @Data
-@AllArgsConstructor
 public class OrderMaster {
     //订单id
     @Id
@@ -45,7 +44,6 @@ public class OrderMaster {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;//timestamp用什么来表示。
     //最近修改时间，修改时自动更新
-
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
