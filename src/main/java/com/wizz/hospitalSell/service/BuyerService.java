@@ -4,20 +4,22 @@ package com.wizz.hospitalSell.service;
 import com.wizz.hospitalSell.dto.OrderDto;
 
 /**
- * 买家端
+ * 买家端订单有关（微信端操作）
  * Created By Cx On 2018/6/15 19:24
  */
 public interface BuyerService {
 
     /**
-     * 查询一个订单
+     * 通过openid和orderId查询一个订单
+     * openid用于校验该订单是否为该用户，避免恶意查询
      * @return
      */
-    OrderDto findOrderOne(String openid, String orderId);
+    OrderDto findOneByOpenidAndOrderId(String openid, String orderId);
 
     /**
-     * 取消订单
+     * 通过openid和orderId取消订单
+     * openid用于校验该订单是否为该用户，避免恶意取消
      * @return
      */
-    OrderDto cancelOrder(String openid, String orderId);
+    OrderDto cancelOneByOpenidAndOrderId(String openid, String orderId);
 }

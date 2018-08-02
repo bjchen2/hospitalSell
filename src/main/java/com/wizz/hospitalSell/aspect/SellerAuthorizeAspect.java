@@ -49,13 +49,8 @@ public class SellerAuthorizeAspect {
         //从redis中获取token值
         String token = redisTemplate.opsForValue().get(String.format(RedisConstant.TOKEN_PREFIX,cookie.getValue()));
         if (StringUtils.isEmpty(token)){
-            //如果redis中不存在
+            //如果redis中不存在,说明该token已被篡改
             log.warn("【登陆校验】登录失败，redis查询为空");
-            throw new SellerAuthorizeException();
-        }
-        //如果cookie的值和redis的值不相同
-        if (!cookie.getValue().equals(token)){
-            log.warn("【登陆校验】登录失败，cookie值有误");
             throw new SellerAuthorizeException();
         }
     }

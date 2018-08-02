@@ -1,18 +1,20 @@
 package com.wizz.hospitalSell.service;
 
-
 import com.wizz.hospitalSell.domain.UserInfo;
 
 /**
- * 用户有关service
- * Created By Cx On 2018/7/27 19:23
+ * 用户有关service   微信端
+ * Created By Cx On 2018/8/1 22:43
  */
 public interface UserService {
 
     /**
-     * 根据用户的openid查询用户信息
+     * 新增某个用户
      */
-    UserInfo findUserInfoByOpenId(String openid);
+    UserInfo save(UserInfo userInfo);
 
-    UserInfo findUserInfoByNameAndPass(String username, String password);
+    /**
+     * 查询某个用户
+     */
+    UserInfo findByOpenid(String openId);
 }

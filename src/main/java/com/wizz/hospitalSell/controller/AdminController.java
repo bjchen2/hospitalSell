@@ -6,14 +6,16 @@ import com.wizz.hospitalSell.constant.CookieConstant;
 import com.wizz.hospitalSell.constant.RedisConstant;
 import com.wizz.hospitalSell.domain.UserInfo;
 import com.wizz.hospitalSell.enums.ResultEnum;
-import com.wizz.hospitalSell.service.UserService;
+import com.wizz.hospitalSell.service.AdminService;
 import com.wizz.hospitalSell.utils.CookieUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
@@ -30,27 +32,38 @@ import java.util.concurrent.TimeUnit;
  */
 @Controller
 @Slf4j
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/admin")
+public class AdminController {
 
     @Autowired
-    UserService userService;
+    AdminService adminService;
     @Autowired
     StringRedisTemplate redisTemplate;
     @Autowired
     ProjectConfig projectConfig;
 
+    /**
+     * 登录页面跳转路由
+     * @return
+     */
+    @GetMapping("/index")
+    public ModelAndView index(@RequestParam(required = false) String error, HttpServletRequest request) {
+        Map<String, Object> m = new HashMap<>();
+        if (error != null) m.put("error",error);
+        m.put("username",CookieUtil.getCookie(request,"username"));
+        m.put("password",CookieUtil.getCookie(request,"password"));
+        return new ModelAndView("common/index",m);
+    }
 
     /**
-     * 用户登录路由
+     * 管理员登录路由
      */
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ModelAndView login(String username, String password, HttpServletResponse response) {
         Map<String, Object> m = new HashMap<>();
         m.put("url", "/seller/order/list");
         //1.在数据库中查询该用户是否存在
-        UserInfo userInfo = userService.findUserInfoByNameAndPass(username,password);
-        if (userInfo == null) {
+        if (!adminService.isAdminExist(username,password)) {
             m.put("msg", ResultEnum.LOGIN_FAIL.getMsg());
             return new ModelAndView("common/error", m);
         }
@@ -62,7 +75,7 @@ public class UserController {
         Integer expire = RedisConstant.EXPIRE;
         //opsForValue表示对某个值进行操作，set参数：key、value、过期时间、时间单位
         //String.format(RedisConstant.TOKEN_PREFIX,token):将token按前者的格式，格式化
-        redisTemplate.opsForValue().set(String.format(RedisConstant.TOKEN_PREFIX, token), username+password, expire, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(String.format(RedisConstant.TOKEN_PREFIX, token), username, expire, TimeUnit.SECONDS);
 
         //3.设置token 到 cookie
         CookieUtil.setCookie(response, CookieConstant.TOKEN, token, CookieConstant.EXPIRE);
@@ -70,7 +83,7 @@ public class UserController {
     }
 
     /**
-     * 用户登出路由
+     * 管理员登出路由
      */
     @GetMapping("/logout")
     public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {

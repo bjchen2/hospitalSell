@@ -28,7 +28,7 @@ public interface ProductInfoService {
     List<ProductInfo> findUpAll();
 
     /**
-     * 根据分页条件，返回所有商品信息    --服务端使用
+     * 根据分页条件，按时间排序，返回所有商品信息    --服务端使用
      *
      * @return
      */

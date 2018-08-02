@@ -30,7 +30,6 @@ public class OrderDto {
     //买家微信openId
     private String userOpenid;
     //卖家手机号
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String sellerPhone;
     //订单状态，默认0，新下单
     private Integer orderStatus;
@@ -45,7 +44,6 @@ public class OrderDto {
     @JsonSerialize(using = Date2LongSerializer.class)
     private Date updateTime;
     //该订单概要对应的订单详情，一对多关系，@JsonInclude当该字段值为null时，生成json不包含该字段
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     List<OrderDetail> orderDetailList;
 
     //使用@JsonIgnore注解，使其形成json的时候忽略该方法
