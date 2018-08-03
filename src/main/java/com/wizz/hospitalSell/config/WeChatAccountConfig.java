@@ -18,12 +18,27 @@ public class WeChatAccountConfig {
     /**
      * 小程序appId
      */
-    private String APPID;
+    private String appid;
 
     /**
      * 小程序appSecret
      */
-    private String APPSECRET;
+    private String secret;
+
+    /**
+     * 小程序令牌
+     */
+    private String token;
+
+    /**
+     * 加密密钥
+     */
+    private String aesKey;
+
+    /**
+     * 数据格式
+     */
+    private String msgDataFormat;
 
     /**
      * 微信模板ID

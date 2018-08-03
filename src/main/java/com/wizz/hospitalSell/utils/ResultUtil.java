@@ -19,4 +19,8 @@ public class ResultUtil {
     public static ResultVO error(Integer code, String msg) {
         return new ResultVO(code, msg, null);
     }
+
+    public static ResultVO error(String msg) {
+        return new ResultVO(-1, msg, null);
+    }
 }

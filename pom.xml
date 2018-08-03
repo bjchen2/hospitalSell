@@ -47,13 +47,6 @@
 			<version>1.1.9</version>
 		</dependency>
 
-		<!--引入github微信支付开发轮子-->
-		<dependency>
-			<groupId>cn.springboot</groupId>
-			<artifactId>best-pay-sdk</artifactId>
-			<version>1.2.0</version>
-		</dependency>
-
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -96,11 +89,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-cache</artifactId>
 		</dependency>
-
+		<!--引入微信小程序github轮子-->
 		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-			<version>2.9.0</version>
+			<groupId>com.github.binarywang</groupId>
+			<artifactId>weixin-java-miniapp</artifactId>
+			<version>3.1.0</version>
 		</dependency>
 	</dependencies>
 

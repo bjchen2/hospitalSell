@@ -15,6 +15,7 @@ import java.util.Date;
  */
 @Entity
 @Data
+@AllArgsConstructor
 @DynamicInsert
 public class CommentInfo {
     //评论id
@@ -29,7 +30,7 @@ public class CommentInfo {
     //菜品id
     private String productId;
     //用户微信名
-    private String userName;
+    private String wxName;
     //用户微信openid
     private String openid;
     //创建时间

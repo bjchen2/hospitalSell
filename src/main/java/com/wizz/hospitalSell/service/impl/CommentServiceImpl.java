@@ -23,6 +23,11 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
+    public List<ProductCommentDto> findDtosByProductName(String productName) {
+        return null;
+    }
+
+    @Override
     public CommentInfo create(CommentInfo productInfo) {
         return null;
     }
