@@ -2,6 +2,7 @@ package com.wizz.hospitalSell.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -15,6 +16,7 @@ import java.util.Date;
  */
 @Entity
 @DynamicInsert
+@Data
 public class OrderDetail {
     //订单详情id
     @Id

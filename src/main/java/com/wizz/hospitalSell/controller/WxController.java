@@ -63,7 +63,7 @@ public class WxController {
             return ResultUtil.success(userVO);
         } catch (WxErrorException e) {
             log.error(e.getMessage(), e);
-            return ResultUtil.error(e.toString());
+            return ResultUtil.error(e.getMessage());
         }
     }
 }
