@@ -94,8 +94,7 @@ public class AdminController {
         }
         //opsForValue表示对某个值进行操作，set参数：key、value、过期时间、时间单位
         //String.format(RedisConstant.TOKEN_PREFIX,token):将token按前者的格式，格式化
-        //TODO 实体类完成后将value改为 adminInfo.getUsername()
-        redisTemplate.opsForValue().set(String.format(RedisConstant.TOKEN_PREFIX, token), "1", expire, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(String.format(RedisConstant.TOKEN_PREFIX, token), adminInfo.getAdminName(), expire, TimeUnit.SECONDS);
 
         //3.设置token 到 cookie
         CookieUtil.setCookie(response, CookieConstant.TOKEN, token, expire);
@@ -146,12 +145,17 @@ public class AdminController {
         BeanUtils.copyProperties(registerForm,adminInfo);
         if (!adminService.isAdminExist(adminInfo)){
             //若已有管理员不存在
-            //TODO adminInfo还未写，无法get到
-            log.error("[新增管理员]已有管理员账号有误,username={},pass={}");
+            log.error("[新增管理员]已有管理员账号有误,adminName={},adminPass={}",adminInfo.getAdminName(),adminInfo.getAdminPass());
             m.put("error","已有管理员账号有误");
             return new ModelAndView("common/register",m);
         }
         //TODO 判断新管理员用户名是否存在，若不存在就注册
+        if (adminService.isAdminNameExist(registerForm.getNewAdminName())){
+            log.error("[新增管理员]新增管理员用户名已存在,adminName={}",registerForm.getNewAdminName());
+            m.put("error","新增管理员用户名已存在");
+        }
+        adminInfo = new AdminInfo(registerForm.getNewAdminName(),registerForm.getNewAdminPass());
+        adminService.create(adminInfo);
         m.put("url", "/admin/index");
         m.put("msg","添加管理员成功");
         return new ModelAndView("common/success",m);

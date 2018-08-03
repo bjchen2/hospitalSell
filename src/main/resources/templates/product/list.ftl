@@ -19,9 +19,10 @@
                                     <th>名称</th>
                                     <th>图片</th>
                                     <th>单价</th>
-                                    <th>库存</th>
                                     <th>描述</th>
+                                    <th>卖家电话</th>
                                     <th>类目</th>
+                                    <th>总销量</th>
                                     <th>创建时间</th>
                                     <th>修改时间</th>
                                     <th colspan="2">操作</th>
@@ -34,9 +35,10 @@
                                 <td>${productInfo.productName}</td>
                                 <td><img height="100" width="100" src="${productInfo.productIcon} "></td>
                                 <td>${productInfo.productPrice}</td>
-                                <td>${productInfo.productStock}</td>
                                 <td>${productInfo.productDescription}</td>
+                                <td>${productInfo.sellerPhone}</td>
                                 <td>${productInfo.categoryType}</td>
+                                <td>${productInfo.productSales}</td>
                                 <td>${productInfo.createTime}</td>
                                 <td>${productInfo.updateTime}</td>
                                 <td><a href="/seller/product/index?productId=${productInfo.productId}">修改</a></td>

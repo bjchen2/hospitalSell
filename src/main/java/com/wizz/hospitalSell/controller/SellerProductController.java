@@ -2,15 +2,18 @@ package com.wizz.hospitalSell.controller;
 
 import com.wizz.hospitalSell.domain.ProductCategory;
 import com.wizz.hospitalSell.domain.ProductInfo;
+import com.wizz.hospitalSell.dto.ProductCommentDto;
 import com.wizz.hospitalSell.exception.SellException;
 import com.wizz.hospitalSell.form.ProductForm;
 import com.wizz.hospitalSell.service.CategoryService;
+import com.wizz.hospitalSell.service.CommentService;
 import com.wizz.hospitalSell.service.ProductInfoService;
 import com.wizz.hospitalSell.utils.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -39,11 +42,13 @@ public class SellerProductController {
     ProductInfoService productInfoService;
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    CommentService commentService;
 
     /**
      * 商品列表页面
      */
-    @GetMapping("list")
+    @GetMapping("/list")
     public ModelAndView list(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size) {
         Map<String, Object> m = new HashMap<>();
         Page<ProductInfo> productInfoPage = productInfoService.findAll(PageRequest.of(page - 1, size));
@@ -134,6 +139,27 @@ public class SellerProductController {
             return new ModelAndView("common/error", m);
         }
         return new ModelAndView("common/success", m);
+    }
+
+    /**
+     * 商品评价页面
+     */
+    @GetMapping("/comment")
+    public ModelAndView comment(@RequestParam(required = false) String productName, @RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size) {
+        Map<String, Object> m = new HashMap<>();
+        List<ProductCommentDto> productComments;
+        if (!StringUtils.isEmpty(productName)) {
+            //如果Id不为空则为查询某个商品评价
+            productComments = commentService.findDtosByProductName(productName);
+        }
+        else {
+            productComments = commentService.findAllDtos();
+        }
+        Page<ProductCommentDto> productCommentDtoPage = new PageImpl<ProductCommentDto>(productComments,PageRequest.of(page - 1, size),productComments.size());
+        m.put("productCommentDtoPage", productCommentDtoPage);
+        m.put("currentPage", page);
+        m.put("size", size);
+        return new ModelAndView("/product/comment", m);
     }
 
 }

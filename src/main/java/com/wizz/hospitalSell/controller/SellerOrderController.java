@@ -91,8 +91,9 @@ public class SellerOrderController {
         return new ModelAndView("order/detail", m);
     }
 
+
     /**
-     * 完结订单
+     * 接订单
      *
      * @return
      */

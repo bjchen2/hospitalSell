@@ -21,7 +21,6 @@
                                         <th>地址</th>
                                         <th>金额</th>
                                         <th>订单状态</th>
-                                        <th>支付方式</th>
                                         <th>支付状态</th>
                                         <th>创建时间</th>
                                         <th colspan="2">操作</th>
@@ -30,16 +29,20 @@
                                     <tbody>
                             <#list orderDtoPage.getContent() as orderDto>
                             <tr>
-                                <td>${orderDto.orderId}</td>
+                                <td><a href="/seller/order/detail?orderId=${orderDto.orderId}">${orderDto.orderId}</a></td>
                                 <td>${orderDto.userName}</td>
                                 <td>${orderDto.userPhone}</td>
                                 <td>${orderDto.userAddress}</td>
                                 <td>${orderDto.orderAmount}</td>
                                 <td>${orderDto.getOrderStatusEnum().message}</td>
-                                <td>微信</td>
                                 <td>${orderDto.getPayStatusEnum().message}</td>
                                 <td>${orderDto.createTime}</td>
-                                <td><a href="/seller/order/detail?orderId=${orderDto.orderId}">详情</a></td>
+                                <td>
+                                <#--当订单为新下单状态时才显示接单操作-->
+                                    <#if orderDto.orderStatus == 0>
+                                    <a href="/seller/order/finish?orderId=${orderDto.orderId}">接单</a>
+                                    </#if>
+                                </td>
                                 <td>
                                 <#--当订单为新下单状态时才显示取消操作-->
                                     <#if orderDto.orderStatus == 0>

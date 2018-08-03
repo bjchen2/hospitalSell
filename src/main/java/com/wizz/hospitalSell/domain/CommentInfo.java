@@ -29,7 +29,7 @@ public class CommentInfo {
     //菜品id
     private String productId;
     //用户微信名
-    private String wxName;
+    private String userName;
     //用户微信openid
     private String openid;
     //创建时间

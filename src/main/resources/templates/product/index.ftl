@@ -19,8 +19,8 @@
                             <input name="productPrice" type="text" class="form-control" value="${(productInfo.productPrice)!''}"/>
                         </div>
                         <div class="form-group">
-                            <label">库存</label>
-                            <input name="productStock" type="number" class="form-control" value="${(productInfo.productStock)!''}"/>
+                            <label">卖家电话</label>
+                            <input name="sellerPhone" type="number" class="form-control" value="${(productInfo.sellerPhone)!''}"/>
                         </div>
                         <div class="form-group">
                             <label">描述</label>

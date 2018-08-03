@@ -29,7 +29,7 @@ public class ExceptionHandle {
     //拦截登录异常,若检验redis和cookie没有正确的登录值，则跳转回登录界面
     @ExceptionHandler(SellerAuthorizeException.class)
     public ModelAndView handleAuthorizeException() {
-        return new ModelAndView("redirect:".concat("/user/index"));
+        return new ModelAndView("redirect:".concat("/admin/index"));
     }
 
     @ExceptionHandler(SellException.class)

@@ -8,22 +8,22 @@
 <div class="container">
     <div class="row clearfix">
         <div class="col-md-12 column">
-            <form role="form" method="post" action="/user/login">
+            <form role="form" method="post" action="/admin/register">
                 <div class="form-group">
                     <label>已有管理员账号</label>
-                    <input name="username" type="text" class="form-control"/>
+                    <input name="adminName" type="text" class="form-control"/>
                 </div>
                 <div class="form-group">
                     <label>已有管理员密码</label>
-                    <input name="password" type="password" class="form-control"  />
+                    <input name="adminPass" type="password" class="form-control"  />
                 </div>
                 <div class="form-group">
                     <label>新增管理员账号</label>
-                    <input name="newUsername" type="text" class="form-control" />
+                    <input name="newAdminName" type="text" class="form-control" />
                 </div>
                 <div class="form-group">
                     <label>新增管理员密码</label>
-                    <input name="newPassword" type="password" class="form-control" />
+                    <input name="newAdminPass" type="password" class="form-control" />
                 </div>
                 <div class="form-group">
                 <#--如果error信息存在，说明已有管理员账号有误-->

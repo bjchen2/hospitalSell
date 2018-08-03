@@ -38,7 +38,7 @@ public interface CategoryService {
     ProductCategory findByCategoryType(Integer type);
 
     /**
-     * 保存该类目
+     * 保存该类目，类目编号为0时不能修改
      *
      * @return
      */

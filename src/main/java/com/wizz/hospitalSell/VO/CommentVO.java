@@ -2,6 +2,7 @@ package com.wizz.hospitalSell.VO;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.wizz.hospitalSell.utils.serializer.Date2LongSerializer;
+import lombok.Data;
 
 import java.util.Date;
 
@@ -9,6 +10,7 @@ import java.util.Date;
  * 商品评价
  * Created By Cx On 2018/8/1 21:38
  */
+@Data
 public class CommentVO {
 
     //商品质量评价

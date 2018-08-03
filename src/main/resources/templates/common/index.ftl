@@ -8,7 +8,7 @@
 <div class="container">
     <div class="row clearfix">
         <div class="col-md-12 column">
-            <form role="form" method="post" action="/user/login">
+            <form role="form" method="post" action="/admin/login">
                 <div class="form-group">
                     <label>用户名</label>
                     <input name="username" type="text" class="form-control" value="${(username)!''}"/>
@@ -20,7 +20,7 @@
                 <div class="form-group">
                     <#--如果error信息存在，说明登录失败-->
                     <#if error??>
-                        <p class="text-danger">登录失败，账号或密码错误</p>
+                        <p class="text-danger">${error}</p>
                     </#if>
                 </div>
                 <div class="checkbox">
@@ -28,7 +28,7 @@
                 </div>
                 <button type="submit" class="btn btn-default">登录</button>
             </form>
-            <button type="button" class="btn btn-default" href="">添加新管理员</button>
+            <a class='btn btn-primary ' href="/admin/register">添加新管理员</a>
         </div>
     </div>
 </div>

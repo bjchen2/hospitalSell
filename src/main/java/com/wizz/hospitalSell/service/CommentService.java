@@ -13,14 +13,19 @@ import java.util.List;
 public interface CommentService {
 
     /**
-     * 通过商品ID查询商品所有评论
+     * 通过商品ID查询商品所有评论  买家端
      */
     List<CommentInfo> findInfosByProductId(String productId);
 
     /**
-     * 查询所有商品评论相关信息
+     * 查询所有商品评论相关信息    卖家端
      */
     List<ProductCommentDto> findAllDtos();
+
+    /**
+     * 通过模糊搜索，查询合适的商品评价    卖家端
+     */
+    List<ProductCommentDto> findDtosByProductName(String productName);
 
     /**
      * 创建新评论

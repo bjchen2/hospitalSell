@@ -27,7 +27,7 @@ public class OrderMaster {
     //买家手机号
     private String userPhone;
     //买家姓名
-    private String wxName;
+    private String userName;
     //买家地址
     private String userAddress;
     //卖家联系地址
