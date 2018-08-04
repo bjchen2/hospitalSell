@@ -29,6 +29,7 @@ public enum ResultEnum {
     CATEGORY_NOT_EXIST(24,"类目不存在"),
     LOGIN_FAIL(25,"登录失败，账号或密码错误"),
     LOGOUT_SUCCESS(26,"登出成功"),
+    ADMIN_NAME_EXIST(27,"管理员用户名已存在"),
     ;
 
     private Integer code;

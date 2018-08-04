@@ -149,7 +149,6 @@ public class AdminController {
             m.put("error","已有管理员账号有误");
             return new ModelAndView("common/register",m);
         }
-        //TODO 判断新管理员用户名是否存在，若不存在就注册
         if (adminService.isAdminNameExist(registerForm.getNewAdminName())){
             log.error("[新增管理员]新增管理员用户名已存在,adminName={}",registerForm.getNewAdminName());
             m.put("error","新增管理员用户名已存在");

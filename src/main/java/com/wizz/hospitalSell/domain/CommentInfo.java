@@ -15,7 +15,6 @@ import java.util.Date;
  */
 @Entity
 @Data
-@AllArgsConstructor
 @DynamicInsert
 public class CommentInfo {
     //评论id
