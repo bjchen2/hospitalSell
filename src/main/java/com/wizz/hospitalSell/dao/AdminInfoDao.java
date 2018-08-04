@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface AdminInfoDao extends JpaRepository<AdminInfo,Integer> {
 
     Boolean existsByAdminNameAndAdminPass(String adminName, String adminPass);
-    Boolean exitsByAdminName(String adminName);
+    Boolean existsByAdminName(String adminName);
 
 }

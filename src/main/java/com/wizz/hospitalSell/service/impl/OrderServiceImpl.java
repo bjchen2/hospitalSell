@@ -1,5 +1,7 @@
 package com.wizz.hospitalSell.service.impl;
 
+import com.wizz.hospitalSell.dao.OrderDetailDao;
+import com.wizz.hospitalSell.dao.OrderMasterDao;
 import com.wizz.hospitalSell.domain.OrderDetail;
 import com.wizz.hospitalSell.domain.OrderMaster;
 import com.wizz.hospitalSell.domain.ProductInfo;
@@ -9,8 +11,6 @@ import com.wizz.hospitalSell.enums.OrderStatusEnum;
 import com.wizz.hospitalSell.enums.PayStatusEnum;
 import com.wizz.hospitalSell.enums.ResultEnum;
 import com.wizz.hospitalSell.exception.SellException;
-import com.wizz.hospitalSell.repository.OrderDetailRepository;
-import com.wizz.hospitalSell.repository.OrderMasterRepository;
 import com.wizz.hospitalSell.service.OrderService;
 import com.wizz.hospitalSell.service.ProductInfoService;
 import com.wizz.hospitalSell.service.WebSocket;
@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created By Cx On 2018/8/1 18:55
@@ -33,9 +32,9 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService{
 
     @Autowired
-    OrderDetailRepository orderDetailRepository;
+    OrderDetailDao orderDetailDao;
     @Autowired
-    OrderMasterRepository orderMasterRepository;
+    OrderMasterDao orderMasterDao;
     @Autowired
     ProductInfoService productInfoService;
     @Autowired
@@ -68,7 +67,7 @@ public class OrderServiceImpl implements OrderService{
             amount = amount.add(orderDetail.getProductPrice().multiply(new BigDecimal(orderDetail.getProductQuantity())));
         }
         //将订单详情添加到数据库
-        orderDetailRepository.saveAll(orderDto.getOrderDetailList());
+        orderDetailDao.saveAll(orderDto.getOrderDetailList());
         //将订单概要添加到数据库
         OrderMaster orderMaster = new OrderMaster();
         BeanUtils.copyProperties(orderDto, orderMaster);
@@ -77,7 +76,7 @@ public class OrderServiceImpl implements OrderService{
         orderMaster.setPayStatus(PayStatusEnum.WAIT.getCode());
         orderMaster.setOrderAmount(amount);
         //存储订单概要，并将createTime返回
-        orderDto.setCreateTime(orderMasterRepository.save(orderMaster).getCreateTime());
+        orderDto.setCreateTime(orderMasterDao.save(orderMaster).getCreateTime());
         //扣库存
         productInfoService.decreaseStock(cartDtos);
         //webSocket发送消息，告知卖家有新订单

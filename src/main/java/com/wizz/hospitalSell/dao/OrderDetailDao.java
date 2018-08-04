@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface OrderDetaiDao extends JpaRepository<OrderDetail,String> {
+public interface OrderDetailDao extends JpaRepository<OrderDetail,String> {
 
     List<OrderDetail> findByDetailId(String detailId);
 }
