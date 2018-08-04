@@ -8,7 +8,6 @@ import com.wizz.hospitalSell.constant.PushMessageConstant;
 import com.wizz.hospitalSell.dto.OrderDto;
 import com.wizz.hospitalSell.service.PushMessageService;
 import lombok.extern.slf4j.Slf4j;
-import me.chanjar.weixin.common.error.WxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +38,6 @@ public class PushMessageServiceImpl implements PushMessageService {
         wxMpTemplateMessage.addData(new WxMaTemplateMessage.Data("keyword2", orderName));
         wxMpTemplateMessage.addData(new WxMaTemplateMessage.Data("keyword3", "￥"+orderDto.getOrderAmount()));
         wxMpTemplateMessage.addData(new WxMaTemplateMessage.Data("keynote4", orderDto.getOrderStatusEnum().getMessage()));
-        wxMpTemplateMessage.addData(new WxMaTemplateMessage.Data("keyword5", orderDto.getSellerPhone()));
         wxMpTemplateMessage.addData(new WxMaTemplateMessage.Data("keyword6", PushMessageConstant.END_MESSAGE));
         //异常用try-catch捕获，防止抛出异常造成回滚
 //        try {

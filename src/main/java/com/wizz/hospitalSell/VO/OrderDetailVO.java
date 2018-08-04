@@ -23,5 +23,7 @@ public class OrderDetailVO {
     private Integer productQuantity;
     //商品图片url
     private String productIcon;
+    //卖家联系电话
+    private String sellerPhone;
 
 }

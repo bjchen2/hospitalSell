@@ -7,6 +7,7 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -17,20 +18,30 @@ import java.util.Date;
 @Table
 @Data
 public class ProductInfo {
-    //类目id
+
+    //商品id
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer categoryId;
-    //类目名
-    private String categoryName;
-    //类目编号
+    private String productId;
+    //商品名称
+    private String productName;
+    //商品单价
+    private BigDecimal productPrice;
+    //商品总销量
+    private Integer productSales;
+    //商品简介
+    private String productDescription;
+    //商品url
+    private String productIcon;
+    //卖家联系电话
+    private String sellerPhone;
+    //商品的状态0：上架 1：下架
+    private Integer productStatus;
+    //商品的类目 0为默认类目
     private Integer categoryType;
-    //创建时间
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
-    //最近修改时间
+    //最近新改时间
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
-
 
 }

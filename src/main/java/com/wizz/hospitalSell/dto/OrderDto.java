@@ -29,8 +29,6 @@ public class OrderDto {
     private String userAddress;
     //买家微信openId
     private String userOpenid;
-    //卖家手机号
-    private String sellerPhone;
     //订单状态，默认0，新下单
     private Integer orderStatus;
     //支付状态，默认0，未支付

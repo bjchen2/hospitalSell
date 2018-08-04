@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 订单主表
@@ -30,6 +31,10 @@ public class OrderMasterVO {
     private Integer payStatus = PayStatusEnum.WAIT.getCode();
     //订单总额
     private BigDecimal orderAmount;
+    //配送时间
+    private Date deliveryTime;
     //创建时间
     private Date createTime;
+    //该订单商品详情
+    private List<OrderDetailVO> orderDetailList;
 }
