@@ -53,12 +53,8 @@ public class AdminController {
      * @return
      */
     @GetMapping("/index")
-    public ModelAndView index(@RequestParam(required = false) String error, HttpServletRequest request) {
-        Map<String, Object> m = new HashMap<>();
-        if (error != null) m.put("error",error);
-        m.put("username",CookieUtil.getCookie(request,"username"));
-        m.put("password",CookieUtil.getCookie(request,"password"));
-        return new ModelAndView("common/index",m);
+    public ModelAndView index() {
+        return new ModelAndView("common/index");
     }
 
     /**
@@ -131,7 +127,6 @@ public class AdminController {
 
     /**
      * 管理员注册操作
-     * TODO 待测试
      */
     @PostMapping("/register")
     public ModelAndView doRegister(@Valid RegisterForm registerForm,BindingResult bindingResult) {
@@ -145,13 +140,14 @@ public class AdminController {
         BeanUtils.copyProperties(registerForm,adminInfo);
         if (!adminService.isAdminExist(adminInfo)){
             //若已有管理员不存在
-            log.error("[新增管理员]已有管理员账号有误,adminName={},adminPass={}",adminInfo.getAdminName(),adminInfo.getAdminPass());
-            m.put("error","已有管理员账号有误");
+            log.error("[新增管理员]已有管理员账号或密码有误,adminName={},adminPass={}",adminInfo.getAdminName(),adminInfo.getAdminPass());
+            m.put("error","已有管理员账号或密码有误");
             return new ModelAndView("common/register",m);
         }
         if (adminService.isAdminNameExist(registerForm.getNewAdminName())){
             log.error("[新增管理员]新增管理员用户名已存在,adminName={}",registerForm.getNewAdminName());
             m.put("error","新增管理员用户名已存在");
+            return new ModelAndView("common/register",m);
         }
         adminInfo = new AdminInfo(registerForm.getNewAdminName(),registerForm.getNewAdminPass());
         adminService.create(adminInfo);

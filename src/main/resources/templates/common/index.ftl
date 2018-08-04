@@ -11,11 +11,11 @@
             <form role="form" method="post" action="/admin/login">
                 <div class="form-group">
                     <label>用户名</label>
-                    <input name="username" type="text" class="form-control" value="${(username)!''}"/>
+                    <input name="adminName" type="text" class="form-control" />
                 </div>
                 <div class="form-group">
                     <label>密码</label>
-                    <input name="password" type="password" class="form-control" value="${(password)!''}" />
+                    <input name="adminPass" type="password" class="form-control" />
                 </div>
                 <div class="form-group">
                     <#--如果error信息存在，说明登录失败-->

@@ -20,7 +20,7 @@ public class AdminInfo {
     //管理员id
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)//JPA提供四种方法，自增性用identity.
-    private Integer adiminId;//integer是int的封装类，为什么要用integer来存储。
+    private Integer adminId;//integer是int的封装类，为什么要用integer来存储。
     //管理员用户名
     private String adminName;
     //管理员密码

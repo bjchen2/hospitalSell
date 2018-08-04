@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -155,7 +156,8 @@ public class SellerProductController {
         else {
             productComments = commentService.findAllDtos();
         }
-        Page<ProductCommentDto> productCommentDtoPage = new PageImpl<ProductCommentDto>(productComments,PageRequest.of(page - 1, size),productComments.size());
+        if (productComments == null) productComments = new ArrayList<>();
+        Page<ProductCommentDto> productCommentDtoPage = new PageImpl<>(productComments,PageRequest.of(page - 1, size),productComments.size());
         m.put("productCommentDtoPage", productCommentDtoPage);
         m.put("currentPage", page);
         m.put("size", size);
