@@ -16,7 +16,8 @@
                         </div>
                         <div class="form-group">
                             <label">价格</label>
-                            <input name="productPrice" type="text" class="form-control" value="${(productInfo.productPrice)!''}"/>
+                            <#--step="0.01"表示可以输入两位小数-->
+                            <input name="productPrice" type="number" step="0.01" class="form-control" value="${(productInfo.productPrice)!''}"/>
                         </div>
                         <div class="form-group">
                             <label">卖家电话</label>

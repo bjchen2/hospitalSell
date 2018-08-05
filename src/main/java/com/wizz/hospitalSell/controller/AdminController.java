@@ -69,7 +69,6 @@ public class AdminController {
             m.put("error", bindingResult.getFieldError().getDefaultMessage());
             return new ModelAndView("common/index", m);
         }
-        //TODO 待测试
         BeanUtils.copyProperties(loginForm,adminInfo);
         //1.在数据库中查询该用户是否存在
         if (!adminService.isAdminExist(adminInfo)) {

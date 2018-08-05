@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface UserInfoDao extends JpaRepository<UserInfo,Integer> {
     UserInfo findByUserName(String userName);
-    List<UserInfo> findAllByUserId(Integer userId);
-
+    UserInfo findByUserId(Integer userId);
+    UserInfo findByUserOpenid(String userOpenid);
 }

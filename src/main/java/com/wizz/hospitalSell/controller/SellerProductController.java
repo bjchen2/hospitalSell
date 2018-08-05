@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -52,7 +53,9 @@ public class SellerProductController {
     @GetMapping("/list")
     public ModelAndView list(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size) {
         Map<String, Object> m = new HashMap<>();
-        Page<ProductInfo> productInfoPage = productInfoService.findAll(PageRequest.of(page - 1, size));
+        //通过更新时间排序分页
+        Sort sort = new Sort(Sort.Direction.DESC,"updateTime") ;
+        Page<ProductInfo> productInfoPage = productInfoService.findAll(PageRequest.of(page - 1, size,sort));
         m.put("productInfoPage", productInfoPage);
         m.put("currentPage", page);
         m.put("size", size);

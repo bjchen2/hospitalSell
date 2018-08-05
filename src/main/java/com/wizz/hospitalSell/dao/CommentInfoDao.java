@@ -1,14 +1,37 @@
 package com.wizz.hospitalSell.dao;
 
+import com.wizz.hospitalSell.domain.mapper.CommentMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import com.wizz.hospitalSell.domain.CommentInfo;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+/**
+ * mybatis对应dao
+ * Created By Cx On 2018/8/5 15:53
+ */
+@Component
+public class CommentInfoDao {
 
-import java.util.Date;
-import java.util.List;
+    @Autowired
+    CommentMapper commentMapper;
 
-public interface CommentInfoDao extends JpaRepository<CommentInfo,String> {
-    CommentInfo getByCommentId(String commentId);
-    List<CommentInfo> findAllByCommentIdAndCreateTimeOrderByCreateTime(String commentId, Date createTime);
+    /**
+     * 查询某商品口味评价为score的条数
+     */
+    public int countOfTasteScoreByProductId(String productId,int score){
+        return commentMapper.countOfTasteScoreByProductId(productId,score);
+    }
+
+    /**
+     * 查询某商品包装评价为score的条数
+     */
+    public int countOfPackingScoreByProductId(String productId,int score){
+        return commentMapper.countOfPackingScoreByProductId(productId,score);
+    }
+
+    /**
+     * 查询某商品质量评价为score的条数
+     */
+    public int countOfQualityScoreByProductId(String productId,int score){
+        return commentMapper.countOfQualityScoreByProductId(productId,score);
+    }
 }

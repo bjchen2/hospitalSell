@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface OrderDetailDao extends JpaRepository<OrderDetail,String> {
 
-    List<OrderDetail> findByDetailId(String detailId);
+    List<OrderDetail> findByOrderId(String orderId);
 }

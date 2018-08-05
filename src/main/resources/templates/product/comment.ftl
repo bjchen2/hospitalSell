@@ -34,9 +34,10 @@
                             <tr>
                                 <td>${productComment.productId}</td>
                                 <td>${productComment.productName}</td>
-                                <td>1星：${productComment.qualityScore.get(1)}，2星：${productComment.qualityScore.get(2)}，3星：${productComment.qualityScore.get(3)}，4星：${productComment.qualityScore.get(4)}，5星：${productComment.qualityScore.get(5)}</td>
-                                <td>1星：${productComment.tasteScore.get(1)}，2星：${productComment.tasteScore.get(2)}，3星：${productComment.tasteScore.get(3)}，4星：${productComment.tasteScore.get(4)}，5星：${productComment.tasteScore.get(5)}</td>
-                                <td>1星：${productComment.packingScore.get(1)}，2星：${productComment.packingScore.get(2)}，3星：${productComment.packingScore.get(3)}，4星：${productComment.packingScore.get(4)}，5星：${productComment.packingScore.get(5)}</td>
+                                <#--freemarker不能用.get方法，且数组中的值必须是字符串-->
+                                <td><p>1星：${productComment.qualityScore["1"]}，    2星：${productComment.qualityScore["2"]}，</p><p>3星：${productComment.qualityScore["3"]}，    4星：${productComment.qualityScore["4"]}，    5星：${productComment.qualityScore["5"]}</p></td>
+                                <td><p>1星：${productComment.tasteScore["1"]}，    2星：${productComment.tasteScore["2"]}，</p><p>3星：${productComment.tasteScore["3"]}，    4星：${productComment.tasteScore["4"]}，    5星：${productComment.tasteScore["5"]}</p></td>
+                                <td><p>1星：${productComment.packingScore["1"]}，    2星：${productComment.packingScore["2"]}，</p><p>3星：${productComment.packingScore["3"]}，    4星：${productComment.packingScore["4"]}，    5星：${productComment.packingScore["5"]}</p></td>
                                 <td>${productComment.result}</td>
                             </tr>
                             </#list>

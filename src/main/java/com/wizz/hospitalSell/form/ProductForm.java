@@ -21,14 +21,12 @@ public class ProductForm {
     //商品单价
     @NotNull(message = "价格不能为空")
     private BigDecimal productPrice;
-    //商品库存
-    @NotNull(message = "库存不能为空")
-    @Min(value = 0,message = "库存不能小于0")
-    private Integer productStock;
     //商品描述
     private String productDescription;
     //商品图片url
     private String productIcon;
+    //卖家联系电话
+    private String sellerPhone;
     //商品类目编号
     @NotNull(message = "商品类目不能为空")
     private Integer categoryType;

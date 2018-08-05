@@ -16,7 +16,7 @@ public class UserVO {
     //用户的微信名
     private String userName;
     //用户的openid
-    private String userOpenId;
+    private String userOpenid;
     //用户头像
     private String userIcon;
 

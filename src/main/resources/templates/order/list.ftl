@@ -53,6 +53,9 @@
                             </#list>
                                     </tbody>
                                 </table>
+                                <div>
+                                    <p><b>备注：</b>点击订单号，可查看订单详情</p>
+                                </div>
                             <#--分页-->
                                 <ul class="pagination">
                                 <#--lte表示小于等于，gte表示大于等于-->

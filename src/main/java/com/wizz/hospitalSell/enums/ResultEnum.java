@@ -30,6 +30,7 @@ public enum ResultEnum {
     LOGIN_FAIL(25,"登录失败，账号或密码错误"),
     LOGOUT_SUCCESS(26,"登出成功"),
     ADMIN_NAME_EXIST(27,"管理员用户名已存在"),
+    DEFAULT_CATEGORY_ERROR(28,"默认类目不可被修改"),
     ;
 
     private Integer code;

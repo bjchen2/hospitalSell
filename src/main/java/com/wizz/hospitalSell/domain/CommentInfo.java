@@ -28,10 +28,8 @@ public class CommentInfo {
     private Integer packingScore;
     //菜品id
     private String productId;
-    //用户微信名
-    private String wxName;
     //用户微信openid
-    private String openid;
+    private String userOpenid;
     //创建时间
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;

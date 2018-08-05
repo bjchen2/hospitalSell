@@ -7,9 +7,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ProductCategoryDao extends JpaRepository<ProductCategory,String> {
+public interface ProductCategoryDao extends JpaRepository<ProductCategory,Integer> {
 
     ProductCategory getByCategoryName(String categoryName);
-    List<ProductCategory> findByCategoryId(Integer categoryId);
+    List<ProductCategory> findByCategoryTypeIn(List<Integer> types);
+    ProductCategory findByCategoryType(Integer type);
 
 }

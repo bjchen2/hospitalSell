@@ -1,8 +1,6 @@
 package com.wizz.hospitalSell.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -30,7 +28,7 @@ public class UserInfo {
     //用户的微信名
     private String userName;
     //用户的openid
-    private String userOpenId;
+    private String userOpenid;
     //用户头像
     private String userIcon;
     //用户地址
@@ -44,9 +42,9 @@ public class UserInfo {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
-    public UserInfo(String userName, String userOpenId, String userIcon) {
+    public UserInfo(String userName, String userOpenid, String userIcon) {
         this.userName = userName;
-        this.userOpenId = userOpenId;
+        this.userOpenid = userOpenid;
         this.userIcon = userIcon;
     }
 

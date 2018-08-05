@@ -1,5 +1,6 @@
 package com.wizz.hospitalSell.service.impl;
 
+import com.wizz.hospitalSell.converter.OrderMaster2DtoConverter;
 import com.wizz.hospitalSell.dao.OrderDetailDao;
 import com.wizz.hospitalSell.dao.OrderMasterDao;
 import com.wizz.hospitalSell.domain.OrderDetail;
@@ -15,20 +16,28 @@ import com.wizz.hospitalSell.service.OrderService;
 import com.wizz.hospitalSell.service.ProductInfoService;
 import com.wizz.hospitalSell.service.WebSocket;
 import com.wizz.hospitalSell.utils.KeyUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created By Cx On 2018/8/1 18:55
  */
 @Service
+@Slf4j
+@Transactional(rollbackFor = Exception.class)
 public class OrderServiceImpl implements OrderService{
 
     @Autowired
@@ -77,8 +86,8 @@ public class OrderServiceImpl implements OrderService{
         orderMaster.setOrderAmount(amount);
         //存储订单概要，并将createTime返回
         orderDto.setCreateTime(orderMasterDao.save(orderMaster).getCreateTime());
-        //扣库存
-        productInfoService.decreaseStock(cartDtos);
+        //增加销量
+        productInfoService.increaseSales(cartDtos);
         //webSocket发送消息，告知卖家有新订单
         webSocket.sendMessage(orderId);
         return orderDto;
@@ -86,22 +95,77 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public OrderDto findOne(String orderId) {
-        return null;
+        Optional<OrderMaster> orderMaster = orderMasterDao.findById(orderId);
+        List<OrderDetail> orderDetails = orderDetailDao.findByOrderId(orderId);
+        if (!orderMaster.isPresent()){
+            //若订单概要不存在
+            throw new SellException(ResultEnum.ORDER_NOT_EXIST);
+        }
+        if (orderDetails == null){
+            //若订单详情不存在
+            throw new SellException(ResultEnum.ORDER_DETAIL_NOT_EXIST);
+        }
+        OrderDto orderDto = new OrderDto();
+        BeanUtils.copyProperties(orderMaster.get(),orderDto);
+        orderDto.setOrderDetailList(orderDetails);
+        return orderDto;
+    }
+
+    @Override
+    public Page<OrderDto> findList(String openId, Pageable pageable) {
+        //因为订单列表不需要知道订单商品是什么，所以不用设置orderDetail
+        Page<OrderMaster> orderMasterPage = orderMasterDao.findByUserOpenid(openId,pageable);
+        return new PageImpl<OrderDto>(OrderMaster2DtoConverter.convert(orderMasterPage.getContent()),
+                pageable, orderMasterPage.getTotalElements());
     }
 
     @Override
     public Page<OrderDto> findList(Pageable pageable) {
-        return null;
+        Page<OrderMaster> orderMasterPage = orderMasterDao.findAll(pageable);
+        return new PageImpl<OrderDto>(OrderMaster2DtoConverter.convert(orderMasterPage.getContent()),pageable,
+                orderMasterPage.getTotalElements());
     }
 
     @Override
     public OrderDto cancel(OrderDto orderDto) {
-        return null;
+        //判断订单状态是否可取消(只有新下单状态可取消订单)
+        if (!orderDto.getOrderStatus().equals(OrderStatusEnum.NEW.getCode()) ){
+            log.error("[取消订单]订单状态不正确，orderId={},orderStatus={}",orderDto.getOrderId(),orderDto.getOrderStatus());
+            throw new SellException(ResultEnum.ORDER_STATUS_ERROR);
+        }
+        //修改状态为取消订单并保存
+        orderDto.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
+        OrderMaster orderMaster = new OrderMaster();
+        BeanUtils.copyProperties(orderDto,orderMaster);
+        orderMasterDao.save(orderMaster);
+        //将取消订单的商品返回库存
+        if (CollectionUtils.isEmpty(orderDto.getOrderDetailList())){
+            //如果商品详情为空，则不需要商品减销量
+            return orderDto;
+        }
+        List<CartDto> cartDtos = orderDto.getOrderDetailList().stream().map(e -> new CartDto(e.getProductId(),e.getProductQuantity()))
+                .collect(Collectors.toList());
+        productInfoService.decreaseSales(cartDtos);
+        //若已支付，则退款
+        if (orderDto.getPayStatus().equals(PayStatusEnum.SUCCESS.getCode())){
+//            payService.refund(orderDto);
+        }
+        return orderDto;
     }
 
     @Override
     public OrderDto finish(OrderDto orderDto) {
-        return null;
+        //判断订单状态
+        if (!orderDto.getPayStatus().equals(OrderStatusEnum.NEW.getCode())){
+            log.error("[接订单]订单状态不正确，orderId={},orderStatus={}",orderDto.getOrderId(),orderDto.getOrderStatus());
+            throw new SellException(ResultEnum.ORDER_STATUS_ERROR);
+        }
+        //修改订单状态并存储
+        orderDto.setOrderStatus(OrderStatusEnum.FINISHED.getCode());
+        OrderMaster orderMaster = new OrderMaster();
+        BeanUtils.copyProperties(orderDto,orderMaster);
+        orderMasterDao.save(orderMaster);
+        return orderDto;
     }
 
 }

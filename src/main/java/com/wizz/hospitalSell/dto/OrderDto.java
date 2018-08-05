@@ -35,6 +35,8 @@ public class OrderDto {
     private Integer payStatus;
     //订单总额
     private BigDecimal orderAmount;
+    //配送时间
+    private Date deliveryTime;
     //创建时间，@JsonSerialize使其生成json时自动按Date2LongSerializer类要求进行转换
     @JsonSerialize(using = Date2LongSerializer.class)
     private Date createTime;

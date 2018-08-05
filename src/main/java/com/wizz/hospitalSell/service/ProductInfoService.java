@@ -42,14 +42,14 @@ public interface ProductInfoService {
     ProductInfo save(ProductInfo product);
 
     /**
-     * 加库存
+     * 增加销量
      */
-    void increaseStock(List<CartDto> cartDtoList);
+    void increaseSales(List<CartDto> cartDtoList);
 
     /**
-     * 减库存
+     * 减少销量
      */
-    void decreaseStock(List<CartDto> cartDtoList);
+    void decreaseSales(List<CartDto> cartDtoList);
 
     /**
      * 上架

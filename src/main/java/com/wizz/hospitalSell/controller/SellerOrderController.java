@@ -100,6 +100,7 @@ public class SellerOrderController {
     @GetMapping("/finish")
     public ModelAndView finish(String orderId) {
         Map<String, Object> m = new HashMap<>();
+        m.put("url", "/seller/order/list");
         try {
             OrderDto orderDto = orderService.findOne(orderId);
             orderService.finish(orderDto);
@@ -107,7 +108,6 @@ public class SellerOrderController {
             //如果订单不存在
             log.error("【卖家端完结订单】发生异常{}", e);
             m.put("msg", e.getMessage());
-            m.put("url", "/seller/order/list");
             return new ModelAndView("common/error", m);
         }
         m.put("msg", ResultEnum.ORDER_FINISH_SUCCESS.getMsg());

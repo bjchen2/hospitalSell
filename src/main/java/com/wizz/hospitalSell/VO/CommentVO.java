@@ -21,6 +21,8 @@ public class CommentVO {
     private Integer packingScore;
     //评价人名称
     private String userName;
+    //评价人名称
+    private String userIcon;
     //评价时间
     @JsonSerialize(using = Date2LongSerializer.class)
     private Date createTime;

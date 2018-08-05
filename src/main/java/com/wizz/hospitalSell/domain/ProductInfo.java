@@ -4,6 +4,8 @@ package com.wizz.hospitalSell.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -15,8 +17,9 @@ import java.util.Date;
  * Created By Cx On 2018/6/10 14:56
  */
 @Entity
-@Table
 @Data
+@DynamicUpdate
+@DynamicInsert
 public class ProductInfo {
 
     //商品id
