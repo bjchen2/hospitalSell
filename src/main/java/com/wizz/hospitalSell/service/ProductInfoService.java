@@ -60,4 +60,9 @@ public interface ProductInfoService {
      * 下架
      */
     ProductInfo offSale(String productId);
+
+    /**
+     * 通过关键字查询商品
+     */
+    List<ProductInfo> findByKey(String key);
 }

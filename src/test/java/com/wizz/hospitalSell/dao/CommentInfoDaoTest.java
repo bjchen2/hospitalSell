@@ -25,4 +25,9 @@ public class CommentInfoDaoTest {
     public void countOfTasteScoreByProductId() {
         System.out.println(commentInfoDao.countOfTasteScoreByProductId("1",5));
     }
+
+    @Test
+    public void findResultByProductId() {
+        System.out.println(commentInfoDao.findResultByProductId("3"));
+    }
 }

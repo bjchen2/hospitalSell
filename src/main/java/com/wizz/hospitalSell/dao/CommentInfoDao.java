@@ -1,8 +1,11 @@
 package com.wizz.hospitalSell.dao;
 
 import com.wizz.hospitalSell.domain.mapper.CommentMapper;
+import com.wizz.hospitalSell.utils.MathUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
 
 /**
  * mybatis对应dao
@@ -33,5 +36,15 @@ public class CommentInfoDao {
      */
     public int countOfQualityScoreByProductId(String productId,int score){
         return commentMapper.countOfQualityScoreByProductId(productId,score);
+    }
+
+    public Integer findResultByProductId(String productId){
+        Double result = commentMapper.findResultByProductId(productId);
+        //Math.round四舍五入返回long，转为string再转为int
+        if (result == null) {
+            //如果没有人评价
+            return 0;
+        }
+        return Integer.valueOf(String.valueOf(Math.round(result)));
     }
 }

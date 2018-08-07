@@ -32,4 +32,9 @@ public interface CommentService {
      * 创建新评论
      */
     CommentInfo create(CommentInfo commentInfo);
+
+    /**
+     * 通过productId，查询某商品额总评分
+     */
+    Integer findResultByProductId(String productId);
 }

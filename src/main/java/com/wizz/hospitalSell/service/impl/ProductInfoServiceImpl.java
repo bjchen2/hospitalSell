@@ -127,4 +127,11 @@ public class ProductInfoServiceImpl implements ProductInfoService{
         productInfoDao.save(productInfo);
         return productInfo;
     }
+
+    @Override
+    public List<ProductInfo> findByKey(String key) {
+        key = "%".concat(key).concat("%");
+        List<ProductInfo> productInfos = productInfoDao.findByProductNameLike(key);
+        return productInfos;
+    }
 }

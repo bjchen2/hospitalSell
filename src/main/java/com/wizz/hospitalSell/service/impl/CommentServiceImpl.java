@@ -116,4 +116,9 @@ public class CommentServiceImpl implements CommentService{
         commentInfo.setCommentId(KeyUtil.genUniqueKey());
         return commentInfoRepository.save(commentInfo);
     }
+
+    @Override
+    public Integer findResultByProductId(String productId) {
+        return commentInfoDao.findResultByProductId(productId);
+    }
 }

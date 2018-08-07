@@ -13,4 +13,5 @@ public class MathUtil {
     public static Boolean equals(Double a,Double b){
         return Math.abs(a - b) < MONEY_RANGE;
     }
+
 }
