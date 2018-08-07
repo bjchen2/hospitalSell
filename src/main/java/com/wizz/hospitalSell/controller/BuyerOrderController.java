@@ -31,7 +31,6 @@ public class BuyerOrderController {
     OrderService orderService;
 
     //创建订单
-    //TODO 待测试
     @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultVO create(@Valid @RequestBody OrderForm orderForm, BindingResult bindingResult){
         if (bindingResult.hasErrors()){

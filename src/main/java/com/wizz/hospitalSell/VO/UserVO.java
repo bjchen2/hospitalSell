@@ -19,6 +19,10 @@ public class UserVO {
     private String userOpenid;
     //用户头像
     private String userIcon;
+    //用户地址
+    private String userAddress;
+    //用户电话
+    private String userPhone;
 
     public UserVO(){
 

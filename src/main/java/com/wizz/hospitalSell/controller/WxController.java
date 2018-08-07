@@ -51,7 +51,7 @@ public class WxController {
             WxMaJscode2SessionResult session = wxService.getUserService().getSessionInfo(wxInfo.getCode());
             log.info(session.getSessionKey());
             log.info(session.getOpenid());
-            //TODO 可以增加自己的逻辑，关联业务相关数据
+            //存储用户信息
             UserInfo userInfo = userService.findByOpenid(session.getOpenid());
             if (userInfo == null){
                 //若用户第一次登录,获取并存储用户信息

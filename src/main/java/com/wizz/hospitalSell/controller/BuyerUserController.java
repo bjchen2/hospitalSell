@@ -2,15 +2,20 @@ package com.wizz.hospitalSell.controller;
 
 
 import com.wizz.hospitalSell.VO.ResultVO;
+import com.wizz.hospitalSell.VO.UserVO;
 import com.wizz.hospitalSell.domain.UserInfo;
 import com.wizz.hospitalSell.service.UserService;
 import com.wizz.hospitalSell.utils.ResultUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 
 @RestController
+@Slf4j
 @RequestMapping("/user/info")
 public class BuyerUserController {
 
@@ -23,41 +28,33 @@ public class BuyerUserController {
 
     @GetMapping("/{userId}")
     public ResultVO info(@PathVariable Integer userId){
-        Boolean s=userService.isExistByUserId(userId);
-        if(s==false){
-            return ResultUtil.error("没有此用户，请去注册");
+        if(!userService.isExistByUserId(userId)) {
+            //如果用户不存在
+            log.error("[用户查询]用户Id不存在，userId={}", userId);
+            return ResultUtil.error("用户Id不存在");
         }
-        UserInfo userInfo=userService.findByUserId(userId);
-
-        userInfo.setUserName(userInfo.getUserName());
-        userInfo.setUserIcon(userInfo.getUserIcon());
-        userInfo.setUserAddress(userInfo.getUserAddress());
-        userInfo.setUserPhone(userInfo.getUserPhone());
-
-        return ResultUtil.success(userInfo);
-
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(userService.findByUserId(userId),userVO);
+        return ResultUtil.success(userVO);
     }
 
     /**
      * 更新用户信息
-     * @return
      */
     @PostMapping("/{userId}")
-    public ResultVO update(@PathVariable Integer userId ,@RequestParam String userName,
-                           @RequestParam String userAddress,@RequestParam String userPhone){
-
-        Boolean s=userService.isExistByUserId(userId);
-        if(s==true){
-            return ResultUtil.error("此用户名已经存在，请重新输入用户名");
+    public ResultVO update(@PathVariable Integer userId , @RequestBody Map<String,String> data){
+        UserInfo userInfo = userService.findByUserId(userId);
+        if (data.get("userName") != null){
+            userInfo.setUserName(data.get("userName"));
         }
-
-        UserInfo us=new UserInfo();
-        us.setUserName(userName);
-        us.setUserAddress(userAddress);
-        us.setUserPhone(userPhone);
-        userService.save(us);
-
-        return ResultUtil.success(us);
+        if (data.get("userAddress") != null){
+            userInfo.setUserAddress(data.get("userAddress"));
+        }
+        if (data.get("userAddress") != null){
+            userInfo.setUserPhone(data.get("userAddress"));
+        }
+        userService.save(userInfo);
+        return ResultUtil.success();
     }
 
 

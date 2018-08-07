@@ -53,7 +53,6 @@ public class OrderServiceImpl implements OrderService{
     @Autowired
     WebSocket webSocket;
 
-    //TODO productInfoService未写好，待测试
     @Override
     public OrderDto create(OrderDto orderDto) {
         //随机生成订单Id
