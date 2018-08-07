@@ -35,4 +35,8 @@ public class UserServiceImp implements UserService {
 
         return userInfoDao.existsByUserName(userName);
     }
+    @Override
+    public Boolean isExistByUserId(Integer userId){
+        return userInfoDao.existsByUserId(userId);
+    }
 }
