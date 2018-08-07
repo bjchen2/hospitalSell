@@ -17,4 +17,14 @@ public interface UserService {
      * 查询某个用户
      */
     UserInfo findByOpenid(String openId);
+    /**
+     * 根据userId来查询用户
+     *
+     */
+
+    UserInfo findByUserId(Integer userId);
+    /**
+     * 根据用户名来查询用户是否已经存在
+     */
+    Boolean isExistByUserName(String userName);
 }

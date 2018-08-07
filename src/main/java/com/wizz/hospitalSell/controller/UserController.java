@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/user/info")
 public class UserController {
 
     @Autowired
@@ -23,12 +23,19 @@ public class UserController {
      * 用户根据userid查询用户信息
      */
 
-    @GetMapping("/info")
-    public ResultVO info(@RequestParam(required = false) Integer userId){
-        UserInfo userInfo=userService.findByUserId(userId);
-        if(userInfo==null){
+    @GetMapping("/userId")
+    public ResultVO info(@RequestParam(required = false) String userName,@RequestParam(required = false) String userIcon,
+                         @RequestParam(required = false) String userAddress,@RequestParam(required = false) String userPhone){
+        Boolean s=userService.isExistByUserName(userName);
+        if(s=false){
             return ResultUtil.error("没有此用户，请去注册");
         }
+        UserInfo userInfo=new UserInfo();
+        userInfo.setUserName(userName);
+        userInfo.setUserIcon(userIcon);
+        userInfo.setUserAddress(userAddress);
+        userInfo.setUserPhone(userPhone);
+
         return ResultUtil.success(userInfo);
 
     }
@@ -37,9 +44,9 @@ public class UserController {
      * 更新用户信息
      * @return
      */
-    @PostMapping("/update")
-    public ResultVO update(@RequestParam(required =false )Integer userId,@RequestParam(required =false) String userName,
-                             @RequestParam(required =false) String userAddress,@RequestParam(required =false) String userPhone){
+    @PostMapping("/userId")
+    public ResultVO update(@RequestParam(required =false) String userName,
+                           @RequestParam(required =false) String userAddress,@RequestParam(required =false) String userPhone){
 
         Boolean s=userService.isExistByUserName(userName);
         if(s==true){
@@ -57,3 +64,4 @@ public class UserController {
 
 
 }
+
