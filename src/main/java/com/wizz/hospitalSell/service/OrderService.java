@@ -1,8 +1,11 @@
 package com.wizz.hospitalSell.service;
 
+import com.wizz.hospitalSell.VO.OrderMasterVO;
 import com.wizz.hospitalSell.dto.OrderDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
  * 订单概要有关，卖家端（PC端后台管理）
@@ -50,6 +53,8 @@ public interface OrderService {
     OrderDto finish(OrderDto orderDto);
 
 
-
-
+    /**
+     * 通过openid查询某用户的订单   ——买家端
+     */
+    List<OrderMasterVO> findByOpenid(String openid);
 }

@@ -1,7 +1,9 @@
 package com.wizz.hospitalSell.VO;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.wizz.hospitalSell.enums.OrderStatusEnum;
 import com.wizz.hospitalSell.enums.PayStatusEnum;
+import com.wizz.hospitalSell.utils.serializer.Date2LongSerializer;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -32,8 +34,10 @@ public class OrderMasterVO {
     //订单总额
     private BigDecimal orderAmount;
     //配送时间
+    @JsonSerialize(using = Date2LongSerializer.class)
     private Date deliveryTime;
     //创建时间
+    @JsonSerialize(using = Date2LongSerializer.class)
     private Date createTime;
     //该订单商品详情
     private List<OrderDetailVO> orderDetailList;

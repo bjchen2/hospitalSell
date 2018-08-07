@@ -1,6 +1,7 @@
 package com.wizz.hospitalSell.controller;
 
 import com.wizz.hospitalSell.VO.ResultVO;
+import com.wizz.hospitalSell.converter.OrderForm2DtoConverter;
 import com.wizz.hospitalSell.dto.OrderDto;
 import com.wizz.hospitalSell.enums.ResultEnum;
 import com.wizz.hospitalSell.exception.SellException;
@@ -13,10 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -43,11 +41,15 @@ public class BuyerOrderController {
             log.error("[创建订单]参数不正确，orderForm={}",orderForm);
             throw new SellException(bindingResult.getFieldError().getDefaultMessage(), ResultEnum.PARAM_ERROR.getCode());
         }
-        OrderDto orderDto = new OrderDto();
-        BeanUtils.copyProperties(orderForm,orderDto);
+        OrderDto orderDto = OrderForm2DtoConverter.convert(orderForm);
         //创建订单
         orderService.create(orderDto);
         return ResultUtil.success();
+    }
+
+    @GetMapping("/{openid}")
+    public ResultVO findByOpenid(@PathVariable String openid){
+        return ResultUtil.success(orderService.findByOpenid(openid));
     }
 
 }

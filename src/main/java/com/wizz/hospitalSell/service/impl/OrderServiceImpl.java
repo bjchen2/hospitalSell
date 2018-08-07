@@ -1,6 +1,10 @@
 package com.wizz.hospitalSell.service.impl;
 
+import com.wizz.hospitalSell.VO.OrderDetailVO;
+import com.wizz.hospitalSell.VO.OrderMasterVO;
+import com.wizz.hospitalSell.converter.OrderDetail2VOConverter;
 import com.wizz.hospitalSell.converter.OrderMaster2DtoConverter;
+import com.wizz.hospitalSell.converter.OrderMaster2VOController;
 import com.wizz.hospitalSell.dao.OrderDetailDao;
 import com.wizz.hospitalSell.dao.OrderMasterDao;
 import com.wizz.hospitalSell.domain.OrderDetail;
@@ -166,6 +170,20 @@ public class OrderServiceImpl implements OrderService{
         BeanUtils.copyProperties(orderDto,orderMaster);
         orderMasterDao.save(orderMaster);
         return orderDto;
+    }
+
+    @Override
+    public List<OrderMasterVO> findByOpenid(String openid) {
+        List<OrderMaster> orderMasters = orderMasterDao.findByUserOpenid(openid);
+        List<OrderMasterVO> orderMasterVOs = new ArrayList<>();
+        for (OrderMaster orderMaster : orderMasters){
+            List<OrderDetail> orderDetails = orderDetailDao.findByOrderId(orderMaster.getOrderId());
+            List<OrderDetailVO> orderDetailVOs =  OrderDetail2VOConverter.convert(orderDetails);
+            OrderMasterVO orderMasterVO = OrderMaster2VOController.convert(orderMaster);
+            orderMasterVO.setOrderDetailList(orderDetailVOs);
+            orderMasterVOs.add(orderMasterVO);
+        }
+        return orderMasterVOs;
     }
 
 }
