@@ -29,8 +29,6 @@ public class BuyerOrderController {
 
     @Autowired
     OrderService orderService;
-//    @Autowired
-//    BuyerService buyerService;
 
     //创建订单
     //TODO 待测试
