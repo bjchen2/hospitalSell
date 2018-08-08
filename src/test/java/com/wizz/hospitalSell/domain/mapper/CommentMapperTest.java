@@ -1,6 +1,5 @@
-package com.wizz.hospitalSell.dao;
+package com.wizz.hospitalSell.domain.mapper;
 
-import com.wizz.hospitalSell.domain.mapper.CommentMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,23 +10,17 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.Assert.*;
 
 /**
- * Created By Cx On 2018/8/5 15:54
+ * Created By Cx On 2018/8/8 9:25
  */
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class CommentInfoDaoTest {
+public class CommentMapperTest {
 
     @Autowired
-    CommentInfoDao commentInfoDao;
+    CommentMapper commentMapper;
 
     @Test
-    public void findScoreMapByProductId() {
-        System.out.println(commentInfoDao.findScoreMapByProductId("1"));
-    }
-
-    @Test
-    public void findResultByProductId() {
-        System.out.println(commentInfoDao.findResultByProductId("3"));
+    public void test1() {
     }
 }

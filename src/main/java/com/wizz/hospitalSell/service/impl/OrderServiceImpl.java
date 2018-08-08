@@ -115,14 +115,6 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public Page<OrderDto> findList(String openId, Pageable pageable) {
-        //因为订单列表不需要知道订单商品是什么，所以不用设置orderDetail
-        Page<OrderMaster> orderMasterPage = orderMasterDao.findByUserOpenid(openId,pageable);
-        return new PageImpl<OrderDto>(OrderMaster2DtoConverter.convert(orderMasterPage.getContent()),
-                pageable, orderMasterPage.getTotalElements());
-    }
-
-    @Override
     public Page<OrderDto> findList(Pageable pageable) {
         Page<OrderMaster> orderMasterPage = orderMasterDao.findAll(pageable);
         return new PageImpl<OrderDto>(OrderMaster2DtoConverter.convert(orderMasterPage.getContent()),pageable,
@@ -136,8 +128,14 @@ public class OrderServiceImpl implements OrderService{
             log.error("[取消订单]订单状态不正确，orderId={},orderStatus={}",orderDto.getOrderId(),orderDto.getOrderStatus());
             throw new SellException(ResultEnum.ORDER_STATUS_ERROR);
         }
-        //修改状态为取消订单并保存
+        //修改状态并保存
         orderDto.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
+        //若已支付，则退款
+        if (orderDto.getPayStatus().equals(PayStatusEnum.SUCCESS.getCode())){
+            //退款
+            //修改订单状态
+            orderDto.setPayStatus(PayStatusEnum.WAIT.getCode());
+        }
         OrderMaster orderMaster = new OrderMaster();
         BeanUtils.copyProperties(orderDto,orderMaster);
         orderMasterDao.save(orderMaster);
@@ -149,10 +147,6 @@ public class OrderServiceImpl implements OrderService{
         List<CartDto> cartDtos = orderDto.getOrderDetailList().stream().map(e -> new CartDto(e.getProductId(),e.getProductQuantity()))
                 .collect(Collectors.toList());
         productInfoService.decreaseSales(cartDtos);
-        //若已支付，则退款
-        if (orderDto.getPayStatus().equals(PayStatusEnum.SUCCESS.getCode())){
-//            payService.refund(orderDto);
-        }
         return orderDto;
     }
 
@@ -183,6 +177,23 @@ public class OrderServiceImpl implements OrderService{
             orderMasterVOs.add(orderMasterVO);
         }
         return orderMasterVOs;
+    }
+
+    @Override
+    public void pay(String openid, String productId) {
+        OrderDto orderDto = findOne(productId);
+        if (!openid.equals(orderDto.getUserOpenid())){
+            log.error("[支付订单]订单支付失败，该订单不属于该用户，openid={}.orderOpenid={}",openid,orderDto.getUserOpenid());
+            throw new SellException(ResultEnum.ORDER_OWNER_ERROR);
+        }
+        if (!orderDto.getPayStatus().equals(PayStatusEnum.WAIT.getCode())){
+            log.error("[支付订单]订单支付失败，订单状态非未支付，payStatus={}",orderDto.getPayStatus());
+            throw new SellException(ResultEnum.ORDER_PAY_STATUS_ERROR);
+        }
+        orderDto.setPayStatus(PayStatusEnum.SUCCESS.getCode());
+        OrderMaster orderMaster = new OrderMaster();
+        BeanUtils.copyProperties(orderDto,orderMaster);
+        orderMasterDao.save(orderMaster);
     }
 
 }

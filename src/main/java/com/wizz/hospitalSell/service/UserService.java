@@ -23,10 +23,7 @@ public interface UserService {
      */
 
     UserInfo findByUserId(Integer userId);
-    /**
-     * 根据用户名来查询用户是否已经存在
-     */
-    Boolean isExistByUserName(String userName);
+
     /**
      * 根据用户id来判断是否有该用户
      */

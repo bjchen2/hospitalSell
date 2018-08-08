@@ -13,8 +13,10 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class UserServiceImp implements UserService {
+
     @Autowired
     UserInfoDao userInfoDao;
+
     @Override
     public UserInfo save(UserInfo userInfo) {
         return null;
@@ -24,17 +26,12 @@ public class UserServiceImp implements UserService {
     public UserInfo findByOpenid(String openId) {
         return null;
     }
+
     @Override
     public UserInfo findByUserId(Integer userId) {
-
         return userInfoDao.findByUserId(userId);
-
     }
-    @Override
-    public Boolean isExistByUserName(String userName){
 
-        return userInfoDao.existsByUserName(userName);
-    }
     @Override
     public Boolean isExistByUserId(Integer userId){
         return userInfoDao.existsByUserId(userId);

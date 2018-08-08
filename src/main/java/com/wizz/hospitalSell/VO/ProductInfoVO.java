@@ -26,4 +26,6 @@ public class ProductInfoVO {
     private String productIcon;
     //商品总评价
     private Integer productScore;
+    //商品总销量
+    private Integer productSales;
 }

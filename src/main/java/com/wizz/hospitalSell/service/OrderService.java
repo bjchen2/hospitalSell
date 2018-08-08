@@ -27,13 +27,6 @@ public interface OrderService {
     OrderDto findOne(String orderId);
 
     /**
-     * 查询某个用户的所有订单概要，分页返回(不包含订单详情，即商品信息)
-     *
-     * @return
-     */
-    Page<OrderDto> findList(String openId, Pageable pageable);
-
-    /**
      * 查询所有用户的所有订单概要，分页按时间排序返回(不包含订单详情，即商品信息)
      */
     Page<OrderDto> findList(Pageable pageable);
@@ -57,4 +50,9 @@ public interface OrderService {
      * 通过openid查询某用户的订单   ——买家端
      */
     List<OrderMasterVO> findByOpenid(String openid);
+
+    /**
+     * 订单支付,openid用于验证该订单是否为该用户的 ——买家端
+     */
+    void pay(String openid,String productId);
 }

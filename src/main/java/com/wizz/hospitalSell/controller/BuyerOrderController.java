@@ -6,17 +6,16 @@ import com.wizz.hospitalSell.dto.OrderDto;
 import com.wizz.hospitalSell.enums.ResultEnum;
 import com.wizz.hospitalSell.exception.SellException;
 import com.wizz.hospitalSell.form.OrderForm;
-import com.wizz.hospitalSell.service.BuyerService;
 import com.wizz.hospitalSell.service.OrderService;
 import com.wizz.hospitalSell.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 /**
  * 买家端订单
@@ -44,9 +43,20 @@ public class BuyerOrderController {
         return ResultUtil.success();
     }
 
+    /**
+     * 查询订单
+     */
     @GetMapping("/{openid}")
     public ResultVO findByOpenid(@PathVariable String openid){
         return ResultUtil.success(orderService.findByOpenid(openid));
+    }
+
+    @PostMapping("/pay")
+    public ResultVO pay(@RequestBody Map<String,String> data){
+        String openid = data.get("openid");
+        String productId = data.get("productId");
+        orderService.pay(openid,productId);
+        return ResultUtil.success();
     }
 
 }

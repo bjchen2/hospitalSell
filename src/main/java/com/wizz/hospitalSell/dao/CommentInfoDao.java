@@ -1,11 +1,13 @@
 package com.wizz.hospitalSell.dao;
 
+import com.wizz.hospitalSell.domain.CommentInfo;
 import com.wizz.hospitalSell.domain.mapper.CommentMapper;
-import com.wizz.hospitalSell.utils.MathUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * mybatis对应dao
@@ -18,24 +20,36 @@ public class CommentInfoDao {
     CommentMapper commentMapper;
 
     /**
-     * 查询某商品口味评价为score的条数
+     * 查询某商品的各个评价
      */
-    public int countOfTasteScoreByProductId(String productId,int score){
-        return commentMapper.countOfTasteScoreByProductId(productId,score);
-    }
-
-    /**
-     * 查询某商品包装评价为score的条数
-     */
-    public int countOfPackingScoreByProductId(String productId,int score){
-        return commentMapper.countOfPackingScoreByProductId(productId,score);
-    }
-
-    /**
-     * 查询某商品质量评价为score的条数
-     */
-    public int countOfQualityScoreByProductId(String productId,int score){
-        return commentMapper.countOfQualityScoreByProductId(productId,score);
+    public Map<String,Object> findScoreMapByProductId(String productId){
+        //查询该商品的所有评论
+        List<CommentInfo> commentInfos = commentMapper.findScoreByProductId(productId);
+        Map<String,Object> result = new HashMap<>();
+        //格式为："1"-5，表示1星的有五人
+        Map<String,Integer> qualityScore = new HashMap<>();
+        Map<String,Integer> tasteScore = new HashMap<>();
+        Map<String,Integer> packingScore = new HashMap<>();
+        //总评
+        double ans = 0;
+        //分别表示PackingScore、QualityScore、TasteScore,1-5星人数
+        int[] a={0,0,0,0,0},b={0,0,0,0,0},c={0,0,0,0,0};
+        for (CommentInfo commentInfo : commentInfos){
+            a[commentInfo.getPackingScore()-1]++;
+            b[commentInfo.getQualityScore()-1]++;
+            c[commentInfo.getTasteScore()-1]++;
+        }
+        for(int i = 0;i < 5;i++){
+            packingScore.put(String.valueOf(i+1),a[i]);
+            qualityScore.put(String.valueOf(i+1),b[i]);
+            tasteScore.put(String.valueOf(i+1),c[i]);
+            ans += (a[i]+b[i]+c[i])*(i+1);
+        }
+        result.put("result",commentInfos.size()==0?0:ans/3.0/commentInfos.size());
+        result.put("qualityScore",qualityScore);
+        result.put("tasteScore",tasteScore);
+        result.put("packingScore",qualityScore);
+        return result;
     }
 
     public Integer findResultByProductId(String productId){

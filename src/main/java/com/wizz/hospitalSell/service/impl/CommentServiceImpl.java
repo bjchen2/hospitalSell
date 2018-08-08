@@ -45,29 +45,15 @@ public class CommentServiceImpl implements CommentService{
         List<ProductCommentDto> productCommentDtos = new ArrayList<>();
         for (ProductInfo productInfo : productInfos){
             //star为总星数，num为总评价数，result=star/num
-            int star=0,num=0;
-            Map<String,Integer> qualityScore = new HashMap<>();
-            Map<String,Integer> tasteScore = new HashMap<>();
-            Map<String,Integer> packingScore = new HashMap<>();
             ProductCommentDto productCommentDto = new ProductCommentDto();
             //设置productCommentDto属性
             productCommentDto.setProductId(productInfo.getProductId());
             productCommentDto.setProductName(productInfo.getProductName());
-            for (int i = 1; i < 6; i++){
-                int temp = commentInfoDao.countOfQualityScoreByProductId(productInfo.getProductId(),i);
-                star += i*temp; num += temp;
-                qualityScore.put(String.valueOf(i),temp);
-                temp = commentInfoDao.countOfTasteScoreByProductId(productInfo.getProductId(),i);
-                star += i*temp; num += temp;
-                tasteScore.put(String.valueOf(i),temp);
-                temp = commentInfoDao.countOfPackingScoreByProductId(productInfo.getProductId(),i);
-                star += i*temp; num += temp;
-                packingScore.put(String.valueOf(i),temp);
-            }
-            productCommentDto.setPackingScore(packingScore);
-            productCommentDto.setQualityScore(qualityScore);
-            productCommentDto.setTasteScore(tasteScore);
-            productCommentDto.setResult(num==0?0:star*1.0/num);
+            Map<String,Object> m = commentInfoDao.findScoreMapByProductId(productInfo.getProductId());
+            productCommentDto.setPackingScore((Map<String, Integer>) m.get("packingScore"));
+            productCommentDto.setQualityScore((Map<String, Integer>) m.get("qualityScore"));
+            productCommentDto.setTasteScore((Map<String, Integer>) m.get("tasteScore"));
+            productCommentDto.setResult((Double) m.get("result"));
             //添加进列表
             productCommentDtos.add(productCommentDto);
         }
@@ -82,6 +68,10 @@ public class CommentServiceImpl implements CommentService{
             CommentVO commentVO = new CommentVO();
             //通过openid查询用户信息
             UserInfo userInfo = userInfoDao.findByUserOpenid(commentInfo.getUserOpenid());
+            if (userInfo == null){
+                //如果某条评论的用户信息缺失，直接跳过，即不添加该评论
+                continue;
+            }
             //将评论信息赋值给VO
             BeanUtils.copyProperties(commentInfo,commentVO);
             //将用户信息赋值给VO
