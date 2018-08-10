@@ -24,6 +24,7 @@ public class CommentInfoRepositoryTest {
 
     @Test
     public void findAllByProductIdOrderByCreateTime() {
+        System.out.println(commentInfoRepository.findAllByProductIdOrderByCreateTimeDesc("1"));
     }
 
 

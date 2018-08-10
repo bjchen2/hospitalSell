@@ -11,5 +11,5 @@ import java.util.List;
 public interface CommentInfoRepository extends JpaRepository<CommentInfo,String> {
 
     CommentInfo getByCommentId(String commentId);
-    List<CommentInfo> findAllByProductIdOrderByCreateTime(String productId);
+    List<CommentInfo> findAllByProductIdOrderByCreateTimeDesc(String productId);
 }

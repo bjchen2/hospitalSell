@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +61,7 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     public List<CommentVO> findInfosByProductId(String productId) {
-        List<CommentInfo> commentInfos = commentInfoRepository.findAllByProductIdOrderByCreateTime(productId);
+        List<CommentInfo> commentInfos = commentInfoRepository.findAllByProductIdOrderByCreateTimeDesc(productId);
         List<CommentVO> commentVOs = new ArrayList<>();
         for (CommentInfo commentInfo : commentInfos){
             CommentVO commentVO = new CommentVO();

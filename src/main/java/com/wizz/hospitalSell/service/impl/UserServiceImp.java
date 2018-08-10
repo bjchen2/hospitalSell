@@ -19,12 +19,12 @@ public class UserServiceImp implements UserService {
 
     @Override
     public UserInfo save(UserInfo userInfo) {
-        return null;
+        return userInfoDao.save(userInfo);
     }
 
     @Override
     public UserInfo findByOpenid(String openId) {
-        return null;
+        return userInfoDao.findByUserOpenid(openId);
     }
 
     @Override

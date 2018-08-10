@@ -95,9 +95,32 @@
 			<artifactId>weixin-java-miniapp</artifactId>
 			<version>3.1.0</version>
 		</dependency>
+
+		<!--服务器jdk10，本地jdk8，jdk9以后移去了jaxb包，所以添加依赖-->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>2.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-core</artifactId>
+			<version>2.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
+			<version>1.1.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
+		<finalName>hospitalSell</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
