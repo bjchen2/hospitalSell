@@ -19,6 +19,8 @@ public class UserVO {
     private String userOpenid;
     //用户头像
     private String userIcon;
+    //用户性别
+    private Integer userGender;
     //用户地址
     private String userAddress;
     //用户电话

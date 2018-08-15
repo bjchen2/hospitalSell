@@ -50,8 +50,11 @@ public class BuyerUserController {
         if (data.get("userAddress") != null){
             userInfo.setUserAddress(data.get("userAddress"));
         }
-        if (data.get("userAddress") != null){
-            userInfo.setUserPhone(data.get("userAddress"));
+        if (data.get("userPhone") != null){
+            userInfo.setUserPhone(data.get("userPhone"));
+        }
+        if (data.get("userGender") != null){
+            userInfo.setUserGender(Integer.valueOf(data.get("userGender")));
         }
         userService.save(userInfo);
         return ResultUtil.success();

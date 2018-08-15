@@ -31,6 +31,8 @@ public class UserInfo {
     private String userOpenid;
     //用户头像
     private String userIcon;
+    //用户性别
+    private Integer userGender;
     //用户地址
     private String userAddress;
     //用户电话
@@ -42,10 +44,11 @@ public class UserInfo {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
-    public UserInfo(String userName, String userOpenid, String userIcon) {
+    public UserInfo(String userName, String userOpenid, String userIcon,Integer userGender) {
         this.userName = userName;
         this.userOpenid = userOpenid;
         this.userIcon = userIcon;
+        this.userGender = userGender;
     }
 
     public UserInfo() {
