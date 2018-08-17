@@ -87,6 +87,27 @@
         </div>
     </div>
 
+    <#--弹窗-->
+    <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        提醒
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    你有新的订单
+                </div>
+                <div class="modal-footer">
+                    <button onclick="javascript:document.getElementById('notice').pause()" type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button onclick="location.reload()" type="button" class="btn btn-primary">查看新的订单</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <#--播放音乐-->
     <audio id="notice" loop="loop">
         <source src="/mp3/song.mp3" type="audio/mpeg" />
@@ -99,7 +120,8 @@
         var webSocket = null;
         if('WebSocket' in window){
             //如果该浏览器支持webSocket,则创建weSocket，注意这里不是http协议
-            webSocket = new WebSocket('ws://cx.s1.natapp.cc/sell/webSocket');
+            //https协议使用的是wss，http使用ws
+            webSocket = new WebSocket('ws://cxd.mynatapp.cc/webSocket');
         }
         else {
             alert('该浏览器不支持webSocket');

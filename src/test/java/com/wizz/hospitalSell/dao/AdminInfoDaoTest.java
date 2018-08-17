@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import redis.clients.jedis.Jedis;
 
 import static org.junit.Assert.*;
 
@@ -22,6 +23,9 @@ public class AdminInfoDaoTest {
 
     @Test
     public void existsByAdminNameAndAdminPass() {
+        Jedis jedis = new Jedis("120.78.131.71",6379);
+        System.out.println("连接成功");
+        jedis.lpush("abcd", "123");
     }
 
     @Test
