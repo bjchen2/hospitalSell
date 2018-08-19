@@ -56,7 +56,7 @@ public class WxController {
             if (userInfo == null){
                 //若用户第一次登录,获取并存储用户信息
                 WxMaUserInfo wxUserInfo = wxService.getUserService().getUserInfo(session.getSessionKey(), wxInfo.getEncryptedData(), wxInfo.getIv());
-                userInfo = userService.save(new UserInfo(wxUserInfo.getNickName(),wxUserInfo.getOpenId(),wxUserInfo.getAvatarUrl(),Integer.valueOf(userInfo.getUserGender())));
+                userInfo = userService.save(new UserInfo(wxUserInfo.getNickName(),wxUserInfo.getOpenId(),wxUserInfo.getAvatarUrl(),Integer.valueOf(wxUserInfo.getGender())));
             }
             UserVO userVO = new UserVO();
             BeanUtils.copyProperties(userInfo,userVO);
