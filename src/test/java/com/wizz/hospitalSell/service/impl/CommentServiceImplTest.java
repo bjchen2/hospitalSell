@@ -33,6 +33,7 @@ public class CommentServiceImplTest {
 
     @Test
     public void findAllDtos() {
+        commentService.findAllDtos();
     }
 
     @Test

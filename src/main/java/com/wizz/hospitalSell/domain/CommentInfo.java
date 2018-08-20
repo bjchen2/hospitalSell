@@ -7,6 +7,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -16,7 +17,9 @@ import java.util.Date;
 @Entity
 @Data
 @DynamicInsert
-public class CommentInfo {
+public class CommentInfo implements Serializable{
+
+    private static final long serialVersionUID = 6447964140069063033L;
     //评论id
     @Id
     private String commentId;

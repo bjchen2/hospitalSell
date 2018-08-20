@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.wizz.hospitalSell.utils.serializer.Date2LongSerializer;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -11,8 +12,9 @@ import java.util.Date;
  * Created By Cx On 2018/8/1 21:38
  */
 @Data
-public class CommentVO {
+public class CommentVO implements Serializable{
 
+    private static final long serialVersionUID = -7597163944152609428L;
     //商品质量评价
     private Integer qualityScore;
     //商品口味评价

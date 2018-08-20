@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -20,7 +21,9 @@ import java.util.Date;
 @DynamicInsert
 @DynamicUpdate
 @Entity
-public class UserInfo {
+public class UserInfo implements Serializable{
+
+    private static final long serialVersionUID = -6303134384477906811L;
     //用户id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -14,8 +14,12 @@ import com.wizz.hospitalSell.exception.SellException;
 import com.wizz.hospitalSell.service.CommentService;
 import com.wizz.hospitalSell.utils.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.Cache;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,7 +44,7 @@ public class CommentServiceImpl implements CommentService{
     @Autowired
     UserInfoDao userInfoDao;
 
-    public List<ProductCommentDto> findDtosByProductInfos(List<ProductInfo> productInfos){
+    List<ProductCommentDto> findDtosByProductInfos(List<ProductInfo> productInfos){
         List<ProductCommentDto> productCommentDtos = new ArrayList<>();
         for (ProductInfo productInfo : productInfos){
             //star为总星数，num为总评价数，result=star/num
@@ -60,6 +64,7 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
+    @Cacheable(cacheNames = "comment", key = "#productId",unless = "#result == null ")
     public List<CommentVO> findInfosByProductId(String productId) {
         List<CommentInfo> commentInfos = commentInfoRepository.findAllByProductIdOrderByCreateTimeDesc(productId);
         List<CommentVO> commentVOs = new ArrayList<>();
@@ -82,6 +87,7 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
+    @Cacheable(cacheNames = "comment", key = "0",unless = "#result == null ")
     public List<ProductCommentDto> findAllDtos() {
         List<ProductInfo> productInfos = productInfoDao.findAll();
         return findDtosByProductInfos(productInfos);
@@ -96,6 +102,9 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(cacheNames="comment",key="0"),
+            @CacheEvict(cacheNames="comment",key="#commentInfo.productId") })
     public CommentInfo create(CommentInfo commentInfo) {
         if (!productInfoDao.existsById(commentInfo.getProductId())){
             log.error("[商品评价]商品不存在，productId={}",commentInfo.getProductId());

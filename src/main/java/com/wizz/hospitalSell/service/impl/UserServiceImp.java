@@ -5,6 +5,8 @@ import com.wizz.hospitalSell.domain.UserInfo;
 import com.wizz.hospitalSell.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,13 +20,15 @@ public class UserServiceImp implements UserService {
     UserInfoDao userInfoDao;
 
     @Override
+    @CacheEvict(cacheNames = "user",key = "#userInfo.userOpenid")
     public UserInfo save(UserInfo userInfo) {
         return userInfoDao.save(userInfo);
     }
 
     @Override
-    public UserInfo findByOpenid(String openId) {
-        return userInfoDao.findByUserOpenid(openId);
+    @Cacheable(cacheNames = "user",key = "#openid",unless = "#result == null ")
+    public UserInfo findByOpenid(String openid) {
+        return userInfoDao.findByUserOpenid(openid);
     }
 
     @Override

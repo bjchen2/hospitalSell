@@ -2,6 +2,7 @@ package com.wizz.hospitalSell.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -9,8 +10,9 @@ import java.util.Map;
  * Created By Cx On 2018/8/1 22:36
  */
 @Data
-public class ProductCommentDto {
+public class ProductCommentDto implements Serializable{
 
+    private static final long serialVersionUID = -557337745813375026L;
     //商品Id
     String productId;
     //商品名称
