@@ -11,6 +11,13 @@
                 <div class="col-md-12 column">
                     <div class="row clearfix">
                         <div class="col-md-12 column">
+                        <#--商品搜索框-->
+                            <form role="form" method="get" action="/seller/product/list">
+                                <div class="form-group">
+                                    <input name="productName" type="text" class="form-control" />
+                                    <button type="submit" class="btn btn-default">按商品名称搜索</button>
+                                </div>
+                            </form>
                         <#--商品概要表-->
                             <table class="table table-bordered table-condensed">
                                 <thead>
@@ -60,21 +67,21 @@
                             <#if currentPage lte 1>
                                 <li class="disabled"><a href="#">上一页</a></li>
                             <#else>
-                                <li><a href="/seller/product/list?page=${currentPage-1}&size=${size}">上一页</a></li>
+                                <li><a href="/seller/product/list?page=${currentPage-1}&size=${size}&productName=${key!''}">上一页</a></li>
                             </#if>
                             <#--0..orderDtoPage.getTotalPages()表示一个0到orderDtoPage.getTotalPages()的list-->
                             <#list 1..productInfoPage.getTotalPages() as index>
                                 <#if currentPage == index>
                                     <li class="disabled"><a href="#">${index}</a></li>
                                 <#else>
-                                    <li><a href="/seller/product/list?page=${index}&size=${size}">${index}</a></li>
+                                    <li><a href="/seller/product/list?page=${index}&size=${size}&productName=${key!''}">${index}</a></li>
                                 </#if>
                             </#list>
                             <#--lte表示小于等于，gte表示大于等于-->
                             <#if currentPage gte productInfoPage.getTotalPages()>
                                 <li class="disabled"><a href="#">下一页</a></li>
                             <#else>
-                                <li><a href="/seller/product/list?page=${currentPage+1}&size=${size}">下一页</a></li>
+                                <li><a href="/seller/product/list?page=${currentPage+1}&size=${size}&productName=${key!''}">下一页</a></li>
                             </#if>
                             </ul>
                         </div>

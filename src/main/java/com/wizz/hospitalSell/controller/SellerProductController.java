@@ -51,11 +51,21 @@ public class SellerProductController {
      * 商品列表页面
      */
     @GetMapping("/list")
-    public ModelAndView list(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size) {
+    public ModelAndView list(@RequestParam(required = false) String productName,@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size) {
         Map<String, Object> m = new HashMap<>();
         //通过更新时间排序分页
         Sort sort = new Sort(Sort.Direction.DESC,"updateTime") ;
-        Page<ProductInfo> productInfoPage = productInfoService.findAll(PageRequest.of(page - 1, size,sort));
+        Page<ProductInfo> productInfoPage;
+        if (!StringUtils.isEmpty(productName)) {
+            //如果商品名不为空则为查询某个商品评价
+            List<ProductInfo> productInfos = productInfoService.findByKey(productName);
+            if (productInfos == null) productInfos = new ArrayList<>();
+            productInfoPage = new PageImpl<>(productInfos.subList((page-1)*size,page*size >= productInfos.size()?productInfos.size():page*size),
+                    PageRequest.of(page - 1, size,sort),productInfos.size());
+            m.put("key",productName);
+        }else {
+            productInfoPage = productInfoService.findAll(PageRequest.of(page - 1, size,sort));
+        }
         m.put("productInfoPage", productInfoPage);
         m.put("currentPage", page);
         m.put("size", size);
@@ -153,14 +163,16 @@ public class SellerProductController {
         Map<String, Object> m = new HashMap<>();
         List<ProductCommentDto> productComments;
         if (!StringUtils.isEmpty(productName)) {
-            //如果Id不为空则为查询某个商品评价
+            //如果商品名不为空则为查询某个商品评价
             productComments = commentService.findDtosByProductName(productName);
+            m.put("key",productName);
         }
         else {
             productComments = commentService.findAllDtos();
         }
         if (productComments == null) productComments = new ArrayList<>();
-        Page<ProductCommentDto> productCommentDtoPage = new PageImpl<>(productComments,PageRequest.of(page - 1, size),productComments.size());
+        Page<ProductCommentDto> productCommentDtoPage = new PageImpl<>(productComments.subList((page-1)*size,page*size >= productComments.size()?productComments.size():page*size),
+                PageRequest.of(page - 1, size),productComments.size());
         m.put("productCommentDtoPage", productCommentDtoPage);
         m.put("currentPage", page);
         m.put("size", size);
