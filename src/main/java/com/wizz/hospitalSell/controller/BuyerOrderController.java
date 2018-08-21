@@ -39,8 +39,8 @@ public class BuyerOrderController {
         }
         OrderDto orderDto = OrderForm2DtoConverter.convert(orderForm);
         //创建订单
-        orderService.create(orderDto);
-        return ResultUtil.success();
+        orderDto = orderService.create(orderDto);
+        return ResultUtil.success(orderDto.getOrderId());
     }
 
     /**
