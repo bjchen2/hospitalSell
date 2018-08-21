@@ -53,9 +53,9 @@ public class BuyerOrderController {
 
     @PostMapping("/pay")
     public ResultVO pay(@RequestBody Map<String,String> data){
-        String openid = data.get("openid");
-        String productId = data.get("productId");
-        orderService.pay(openid,productId);
+        String openid = data.get("userOpenid");
+        String orderId = data.get("orderId");
+        orderService.pay(openid,orderId);
         return ResultUtil.success();
     }
 

@@ -180,8 +180,8 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public void pay(String openid, String productId) {
-        OrderDto orderDto = findOne(productId);
+    public void pay(String openid, String orderId) {
+        OrderDto orderDto = findOne(orderId);
         if (!openid.equals(orderDto.getUserOpenid())){
             log.error("[支付订单]订单支付失败，该订单不属于该用户，openid={}.orderOpenid={}",openid,orderDto.getUserOpenid());
             throw new SellException(ResultEnum.ORDER_OWNER_ERROR);
