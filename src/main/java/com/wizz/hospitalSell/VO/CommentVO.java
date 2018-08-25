@@ -23,7 +23,7 @@ public class CommentVO implements Serializable{
     private Integer packingScore;
     //评价人名称
     private String userName;
-    //评价人名称
+    //评价人头像url
     private String userIcon;
     //评价时间
     @JsonSerialize(using = Date2LongSerializer.class)

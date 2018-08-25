@@ -12,6 +12,7 @@ import com.wizz.hospitalSell.domain.OrderMaster;
 import com.wizz.hospitalSell.domain.ProductInfo;
 import com.wizz.hospitalSell.dto.CartDto;
 import com.wizz.hospitalSell.dto.OrderDto;
+import com.wizz.hospitalSell.enums.CommentStatusEnum;
 import com.wizz.hospitalSell.enums.OrderStatusEnum;
 import com.wizz.hospitalSell.enums.PayStatusEnum;
 import com.wizz.hospitalSell.enums.ResultEnum;
@@ -191,6 +192,27 @@ public class OrderServiceImpl implements OrderService{
             throw new SellException(ResultEnum.ORDER_PAY_STATUS_ERROR);
         }
         orderDto.setPayStatus(PayStatusEnum.SUCCESS.getCode());
+        OrderMaster orderMaster = new OrderMaster();
+        BeanUtils.copyProperties(orderDto,orderMaster);
+        orderMasterDao.save(orderMaster);
+    }
+
+    @Override
+    public void commented(String orderId, String openid) {
+        OrderDto orderDto = findOne(orderId);
+        if (orderDto == null){
+            log.error("[商品评价]订单不存在，orderId={}",orderId);
+            throw new SellException(ResultEnum.ORDER_NOT_EXIST);
+        }
+        if (!orderDto.getUserOpenid().equals(openid)){
+            log.error("[商品评价]订单不属于该用户，orderId={},userOpenid={}",orderId,openid);
+            throw new SellException(ResultEnum.ORDER_OWNER_ERROR);
+        }
+        if (orderDto.getCommentStatus().equals(CommentStatusEnum.COMMENTED.getCode())){
+            log.error("[商品评价]该订单已评论，orderId={}",orderId);
+            throw new SellException(ResultEnum.ORDER_COMMENTED);
+        }
+        orderDto.setCommentStatus(CommentStatusEnum.COMMENTED.getCode());
         OrderMaster orderMaster = new OrderMaster();
         BeanUtils.copyProperties(orderDto,orderMaster);
         orderMasterDao.save(orderMaster);

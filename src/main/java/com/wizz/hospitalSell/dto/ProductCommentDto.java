@@ -14,16 +14,18 @@ public class ProductCommentDto implements Serializable{
 
     private static final long serialVersionUID = -557337745813375026L;
     //商品Id
-    String productId;
+    private String productId;
+    //订单id
+    private String orderId;
     //商品名称
-    String productName;
+    private String productName;
     //freemarker数组中的值必须是字符串，为了freemarker能获取，key必须是String
     //商品质量评价,包含五个元素,key分别为1-5，value为1-5星的人数
-    Map<String,Integer> qualityScore;
+    private Map<String,Integer> qualityScore;
     //商品口味评价,包含五个元素,key分别为1-5，value为1-5星的人数
-    Map<String,Integer> tasteScore;
+    private Map<String,Integer> tasteScore;
     //商品包装评价,包含五个元素,key分别为1-5，value为1-5星的人数
-    Map<String,Integer> packingScore;
+    private Map<String,Integer> packingScore;
     //总评，总星数/总人数
-    Double result;
+    private Double result;
 }

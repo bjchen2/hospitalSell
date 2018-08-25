@@ -20,9 +20,12 @@ import java.util.Date;
 public class CommentInfo implements Serializable{
 
     private static final long serialVersionUID = 6447964140069063033L;
-    //评论id
+
     @Id
+    //评论id
     private String commentId;
+    //订单id
+    private String orderId;
     //商品质量评价 0-5
     private Integer qualityScore;
     //商品口味评价

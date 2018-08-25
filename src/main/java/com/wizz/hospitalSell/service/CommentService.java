@@ -29,7 +29,7 @@ public interface CommentService {
     List<ProductCommentDto> findDtosByProductName(String productName);
 
     /**
-     * 创建新评论
+     * 创建新评论,此时需要将订单的评论状态改为已评论
      */
     CommentInfo create(CommentInfo commentInfo);
 

@@ -31,7 +31,7 @@ public enum ResultEnum {
     LOGOUT_SUCCESS(26,"登出成功"),
     ADMIN_NAME_EXIST(27,"管理员用户名已存在"),
     DEFAULT_CATEGORY_ERROR(28,"默认类目不可被修改"),
-
+    ORDER_COMMENTED(29,"该订单已评论");
     ;
 
     private Integer code;

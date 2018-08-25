@@ -36,6 +36,8 @@ public class OrderMaster {
     private Integer orderStatus;
     //支付状态，默认0:未支付 1：支付成功
     private Integer payStatus;
+    //评论状态，默认0:未评论 1：已评论
+    private Integer commentStatus;
     //订单总金额
     private BigDecimal orderAmount;
     //配送时间

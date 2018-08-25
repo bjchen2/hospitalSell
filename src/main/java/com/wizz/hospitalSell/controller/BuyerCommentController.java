@@ -47,7 +47,8 @@ public class BuyerCommentController {
         if (bindingResult.hasErrors()){
             //表单校验有误
             log.error("[创建订单]参数不正确，commentForm={}",commentForm);
-            throw new SellException(bindingResult.getFieldError().getDefaultMessage(), ResultEnum.PARAM_ERROR.getCode());
+            throw new SellException(bindingResult.getFieldError()==null?"参数不正确":bindingResult.getFieldError().getDefaultMessage(),
+                    ResultEnum.PARAM_ERROR.getCode());
         }
         CommentInfo commentInfo = new CommentInfo();
         BeanUtils.copyProperties(commentForm,commentInfo);

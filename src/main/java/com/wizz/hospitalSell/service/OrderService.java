@@ -55,4 +55,9 @@ public interface OrderService {
      * 订单支付,openid用于验证该订单是否为该用户的 ——买家端
      */
     void pay(String openid,String productId);
+
+    /**
+     * 订单评论状态更改,openid用于验证该订单是否为该用户的 ——买家端
+     */
+    void commented(String orderId,String openid);
 }

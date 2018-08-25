@@ -1,6 +1,7 @@
 package com.wizz.hospitalSell.VO;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.wizz.hospitalSell.enums.CommentStatusEnum;
 import com.wizz.hospitalSell.enums.OrderStatusEnum;
 import com.wizz.hospitalSell.enums.PayStatusEnum;
 import com.wizz.hospitalSell.utils.serializer.Date2LongSerializer;
@@ -31,6 +32,8 @@ public class OrderMasterVO {
     private Integer orderStatus = OrderStatusEnum.NEW.getCode();
     //支付状态，默认0，未支付
     private Integer payStatus = PayStatusEnum.WAIT.getCode();
+    //评论状态，默认0:未评论 1：已评论
+    private Integer commentStatus = CommentStatusEnum.NO_COMMENT.getCode();
     //订单总额
     private BigDecimal orderAmount;
     //配送时间

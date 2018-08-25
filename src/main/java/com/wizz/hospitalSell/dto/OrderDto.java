@@ -33,6 +33,8 @@ public class OrderDto {
     private Integer orderStatus;
     //支付状态，默认0，未支付
     private Integer payStatus;
+    //评论状态，默认0:未评论 1：已评论
+    private Integer commentStatus;
     //订单总额
     private BigDecimal orderAmount;
     //配送时间

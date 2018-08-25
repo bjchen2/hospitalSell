@@ -19,9 +19,9 @@ public class CommentForm {
     //商品包装评价
     private Integer packingScore;
     //菜品id
-//    @NotBlank(message = "商品Id不能为空")
     private String productId;
     //用户微信openid
-//    @NotBlank(message = "用户openid不能为空")
     private String userOpenid;
+    //订单Id
+    private String orderId;
 }
