@@ -103,10 +103,12 @@ public class OrderServiceImpl implements OrderService{
         List<OrderDetail> orderDetails = orderDetailDao.findByOrderId(orderId);
         if (!orderMaster.isPresent()){
             //若订单概要不存在
+            log.error("订单不存在，orderId={}",orderId);
             throw new SellException(ResultEnum.ORDER_NOT_EXIST);
         }
         if (orderDetails == null){
             //若订单详情不存在
+            log.error("订单详情不存在，orderId={}",orderId);
             throw new SellException(ResultEnum.ORDER_DETAIL_NOT_EXIST);
         }
         OrderDto orderDto = new OrderDto();
