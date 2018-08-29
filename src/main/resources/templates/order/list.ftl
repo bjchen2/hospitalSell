@@ -22,6 +22,7 @@
                                         <th>金额</th>
                                         <th>订单状态</th>
                                         <th>支付状态</th>
+                                        <th>配送时间</th>
                                         <th>创建时间</th>
                                         <th colspan="2">操作</th>
                                     </tr>
@@ -36,6 +37,7 @@
                                 <td>${orderDto.orderAmount}</td>
                                 <td>${orderDto.getOrderStatusEnum().message}</td>
                                 <td>${orderDto.getPayStatusEnum().message}</td>
+                                <td>${orderDto.deliveryTime}</td>
                                 <td>${orderDto.createTime}</td>
                                 <td>
                                 <#--当订单为新下单状态时才显示接单操作-->

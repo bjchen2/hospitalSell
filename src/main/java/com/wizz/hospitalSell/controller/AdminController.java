@@ -53,7 +53,11 @@ public class AdminController {
      * @return
      */
     @GetMapping("/index")
-    public ModelAndView index() {
+    public ModelAndView index(HttpServletRequest request) {
+        if (CookieUtil.getCookie(request,CookieConstant.TOKEN) != null){
+            //如果cookie存在
+            return new ModelAndView("redirect:" + projectConfig.getSell() + "/seller/order/list");
+        }
         return new ModelAndView("common/index");
     }
 

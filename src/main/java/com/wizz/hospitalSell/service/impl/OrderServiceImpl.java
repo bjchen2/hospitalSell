@@ -92,8 +92,6 @@ public class OrderServiceImpl implements OrderService{
         orderDto.setCreateTime(orderMasterDao.save(orderMaster).getCreateTime());
         //增加销量
         productInfoService.increaseSales(cartDtos);
-        //webSocket发送消息，告知卖家有新订单
-        webSocket.sendMessage(orderId);
         return orderDto;
     }
 
@@ -156,9 +154,13 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public OrderDto finish(OrderDto orderDto) {
         //判断订单状态
-        if (!orderDto.getPayStatus().equals(OrderStatusEnum.NEW.getCode())){
+        if (!orderDto.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())){
             log.error("[接订单]订单状态不正确，orderId={},orderStatus={}",orderDto.getOrderId(),orderDto.getOrderStatus());
             throw new SellException(ResultEnum.ORDER_STATUS_ERROR);
+        }
+        if (!orderDto.getPayStatus().equals(PayStatusEnum.SUCCESS.getCode())){
+            log.error("[接订单]该订单未付款，orderId={},payStatus={}",orderDto.getOrderId(),orderDto.getPayStatus());
+            throw new SellException(ResultEnum.ORDER_PAY_STATUS_ERROR);
         }
         //修改订单状态并存储
         orderDto.setOrderStatus(OrderStatusEnum.FINISHED.getCode());
@@ -197,6 +199,8 @@ public class OrderServiceImpl implements OrderService{
         OrderMaster orderMaster = new OrderMaster();
         BeanUtils.copyProperties(orderDto,orderMaster);
         orderMasterDao.save(orderMaster);
+        //webSocket发送消息，告知卖家有新订单
+        webSocket.sendMessage(orderMaster.getOrderId());
     }
 
     @Override

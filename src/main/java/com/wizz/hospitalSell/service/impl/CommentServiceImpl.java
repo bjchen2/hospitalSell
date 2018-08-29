@@ -11,6 +11,7 @@ import com.wizz.hospitalSell.domain.UserInfo;
 import com.wizz.hospitalSell.dto.OrderDto;
 import com.wizz.hospitalSell.dto.ProductCommentDto;
 import com.wizz.hospitalSell.enums.CommentStatusEnum;
+import com.wizz.hospitalSell.enums.PayStatusEnum;
 import com.wizz.hospitalSell.enums.ResultEnum;
 import com.wizz.hospitalSell.exception.SellException;
 import com.wizz.hospitalSell.service.CommentService;
@@ -114,6 +115,11 @@ public class CommentServiceImpl implements CommentService{
         if (!productInfoDao.existsById(commentInfo.getProductId())){
             log.error("[商品评价]商品不存在，productId={}",commentInfo.getProductId());
             throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+        }
+        OrderDto orderDto = orderService.findOne(commentInfo.getOrderId());
+        if (!orderDto.getPayStatus().equals(PayStatusEnum.SUCCESS)){
+            log.error("[商品评价]该订单未支付，不能评价，orderId={}",commentInfo.getOrderId());
+            throw new SellException(ResultEnum.ORDER_PAY_STATUS_ERROR);
         }
         //将订单的评论状态设为已评论
         orderService.commented(commentInfo.getOrderId(),commentInfo.getUserOpenid());
