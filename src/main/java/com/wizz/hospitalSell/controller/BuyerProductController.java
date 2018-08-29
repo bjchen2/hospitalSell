@@ -76,8 +76,8 @@ public class BuyerProductController {
                 //按商品价格的增序排序
                 foods.sort(Comparator.comparing(ProductInfoVO::getProductPrice));
             }else {
-                //按商品评分的增序排序
-                foods.sort(Comparator.comparing(ProductInfoVO::getProductScore));
+                //按商品评分的降序排序
+                foods.sort((o1, o2) -> o2.getProductScore() - o1.getProductScore());
             }
             categoryVO.setProducts(foods);
             categoryVOs.add(categoryVO);
