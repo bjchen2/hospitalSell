@@ -1,5 +1,6 @@
 package com.wizz.hospitalSell.service;
 
+import com.wizz.hospitalSell.VO.CommentDetailVO;
 import com.wizz.hospitalSell.VO.CommentVO;
 import com.wizz.hospitalSell.domain.CommentInfo;
 import com.wizz.hospitalSell.domain.ProductInfo;
@@ -17,6 +18,11 @@ public interface CommentService {
      * 通过商品ID查询商品所有评论  买家端
      */
     List<CommentVO> findInfosByProductId(String productId);
+
+    /**
+     * 通过订单ID查询该订单的所有评论  买家端
+     */
+    List<CommentDetailVO> findByOrderId(String orderId);
 
     /**
      * 查询所有商品评论相关信息    卖家端

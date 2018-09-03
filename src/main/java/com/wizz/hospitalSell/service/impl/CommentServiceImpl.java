@@ -1,5 +1,6 @@
 package com.wizz.hospitalSell.service.impl;
 
+import com.wizz.hospitalSell.VO.CommentDetailVO;
 import com.wizz.hospitalSell.VO.CommentVO;
 import com.wizz.hospitalSell.dao.CommentInfoDao;
 import com.wizz.hospitalSell.dao.CommentInfoRepository;
@@ -90,6 +91,27 @@ public class CommentServiceImpl implements CommentService{
             commentVOs.add(commentVO);
         }
         return commentVOs;
+    }
+
+    @Override
+    public List<CommentDetailVO> findByOrderId(String orderId) {
+        List<CommentInfo> commentInfos = commentInfoRepository.findAllByOrderId(orderId);
+        if (commentInfos.isEmpty()){
+            log.error("[获取评论]该订单暂无评论，orderId={}",orderId);
+        }
+        List<CommentDetailVO> commentDetailVOs = new ArrayList<>();
+        for (CommentInfo commentInfo : commentInfos){
+            CommentDetailVO commentDetailVO = new CommentDetailVO();
+            ProductInfo productInfo = productInfoDao.getOne(commentInfo.getProductId());
+            //将评论信息赋值给VO
+            BeanUtils.copyProperties(commentInfo,commentDetailVO);
+            //将商品信息赋值给VO
+            commentDetailVO.setProductIcon(productInfo.getProductIcon());
+            commentDetailVO.setProductName(productInfo.getProductName());
+            //添加进返回列表
+            commentDetailVOs.add(commentDetailVO);
+        }
+        return commentDetailVOs;
     }
 
     @Override

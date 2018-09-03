@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.awt.*;
+import java.util.Map;
 
 /**
  * 买家端评价
@@ -39,6 +40,15 @@ public class BuyerCommentController {
             throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
         }
         return ResultUtil.success(commentService.findInfosByProductId(productId));
+    }
+
+    /**
+     * 通过orderId查询所属评论
+     * data 包含 orderId
+     */
+    @GetMapping("/list")
+    public ResultVO findByOrderId(String orderId){
+        return ResultUtil.success(commentService.findByOrderId(orderId));
     }
 
     //注意，作为接收Json的类（CommentForm），必须要有Get/Set方法

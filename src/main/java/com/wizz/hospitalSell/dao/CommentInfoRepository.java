@@ -12,4 +12,5 @@ public interface CommentInfoRepository extends JpaRepository<CommentInfo,String>
 
     CommentInfo getByCommentId(String commentId);
     List<CommentInfo> findAllByProductIdOrderByCreateTimeDesc(String productId);
+    List<CommentInfo> findAllByOrderId(String orderId);
 }
