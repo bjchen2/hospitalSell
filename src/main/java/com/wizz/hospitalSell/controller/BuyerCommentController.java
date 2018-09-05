@@ -11,13 +11,10 @@ import com.wizz.hospitalSell.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.awt.*;
-import java.util.Map;
 
 /**
  * 买家端评价
@@ -34,9 +31,9 @@ public class BuyerCommentController {
     ProductInfoService productInfoService;
 
     @GetMapping("/{productId}")
-    public ResultVO findByProductId(@PathVariable String productId){
-        if (productInfoService.findOne(productId) == null){
-            log.error("[商品评价]商品id错误，商品id不存在，productId={}",productId);
+    public ResultVO findByProductId(@PathVariable String productId) {
+        if (productInfoService.findOne(productId) == null) {
+            log.error("[商品评价]商品id错误，商品id不存在，productId={}", productId);
             throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
         }
         return ResultUtil.success(commentService.findInfosByProductId(productId));
@@ -47,21 +44,21 @@ public class BuyerCommentController {
      * data 包含 orderId
      */
     @GetMapping("/list")
-    public ResultVO findByOrderId(String orderId){
+    public ResultVO findByOrderId(String orderId) {
         return ResultUtil.success(commentService.findByOrderId(orderId));
     }
 
     //注意，作为接收Json的类（CommentForm），必须要有Get/Set方法
     @PostMapping
-    public ResultVO create(@Valid @RequestBody CommentForm commentForm , BindingResult bindingResult){
-        if (bindingResult.hasErrors()){
+    public ResultVO create(@Valid @RequestBody CommentForm commentForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             //表单校验有误
-            log.error("[创建订单]参数不正确，commentForm={}",commentForm);
-            throw new SellException(bindingResult.getFieldError()==null?"参数不正确":bindingResult.getFieldError().getDefaultMessage(),
+            log.error("[创建订单]参数不正确，commentForm={}", commentForm);
+            throw new SellException(bindingResult.getFieldError() == null ? "参数不正确" : bindingResult.getFieldError().getDefaultMessage(),
                     ResultEnum.PARAM_ERROR.getCode());
         }
         CommentInfo commentInfo = new CommentInfo();
-        BeanUtils.copyProperties(commentForm,commentInfo);
+        BeanUtils.copyProperties(commentForm, commentInfo);
         commentService.create(commentInfo);
         return ResultUtil.success();
     }

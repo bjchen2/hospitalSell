@@ -20,13 +20,13 @@ public class UserServiceImp implements UserService {
     UserInfoDao userInfoDao;
 
     @Override
-    @CacheEvict(cacheNames = "user",key = "#userInfo.userOpenid")
+    @CacheEvict(cacheNames = "user", key = "#userInfo.userOpenid")
     public UserInfo save(UserInfo userInfo) {
         return userInfoDao.save(userInfo);
     }
 
     @Override
-    @Cacheable(cacheNames = "user",key = "#openid",unless = "#result == null ")
+    @Cacheable(cacheNames = "user", key = "#openid", unless = "#result == null ")
     public UserInfo findByOpenid(String openid) {
         return userInfoDao.findByUserOpenid(openid);
     }
@@ -37,7 +37,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public Boolean isExistByUserId(Integer userId){
+    public Boolean isExistByUserId(Integer userId) {
         return userInfoDao.existsByUserId(userId);
     }
 }

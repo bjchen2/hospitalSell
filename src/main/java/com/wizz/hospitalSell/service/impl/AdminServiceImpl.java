@@ -23,7 +23,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Boolean isAdminExist(AdminInfo adminInfo) {
-        return adminInfoDao.existsByAdminNameAndAdminPass(adminInfo.getAdminName(),adminInfo.getAdminPass());
+        return adminInfoDao.existsByAdminNameAndAdminPass(adminInfo.getAdminName(), adminInfo.getAdminPass());
     }
 
     @Override
@@ -33,9 +33,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public AdminInfo create(AdminInfo adminInfo) {
-        if (adminInfoDao.existsByAdminName(adminInfo.getAdminName())){
+        if (adminInfoDao.existsByAdminName(adminInfo.getAdminName())) {
             //如果用户名存在
-            log.error("[管理员注册]管理员用户名已存在，adminNam={}",adminInfo.getAdminName());
+            log.error("[管理员注册]管理员用户名已存在，adminNam={}", adminInfo.getAdminName());
             throw new SellException(ResultEnum.ADMIN_NAME_EXIST);
         }
         return adminInfoDao.save(adminInfo);

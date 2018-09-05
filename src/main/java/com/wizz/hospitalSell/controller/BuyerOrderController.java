@@ -31,10 +31,10 @@ public class BuyerOrderController {
 
     //创建订单
     @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultVO create(@Valid @RequestBody OrderForm orderForm, BindingResult bindingResult){
-        if (bindingResult.hasErrors()){
+    public ResultVO create(@Valid @RequestBody OrderForm orderForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             //表单校验有误
-            log.error("[创建订单]参数不正确，orderForm={}",orderForm);
+            log.error("[创建订单]参数不正确，orderForm={}", orderForm);
             throw new SellException(bindingResult.getFieldError().getDefaultMessage(), ResultEnum.PARAM_ERROR.getCode());
         }
         OrderDto orderDto = OrderForm2DtoConverter.convert(orderForm);
@@ -47,15 +47,15 @@ public class BuyerOrderController {
      * 查询订单
      */
     @GetMapping("/{openid}")
-    public ResultVO findByOpenid(@PathVariable String openid){
+    public ResultVO findByOpenid(@PathVariable String openid) {
         return ResultUtil.success(orderService.findByOpenid(openid));
     }
 
     @PostMapping("/pay")
-    public ResultVO pay(@RequestBody Map<String,String> data){
+    public ResultVO pay(@RequestBody Map<String, String> data) {
         String openid = data.get("userOpenid");
         String orderId = data.get("orderId");
-        orderService.pay(openid,orderId);
+        orderService.pay(openid, orderId);
         return ResultUtil.success();
     }
 

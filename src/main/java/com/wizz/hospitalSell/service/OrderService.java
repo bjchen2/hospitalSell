@@ -15,14 +15,11 @@ public interface OrderService {
 
     /**
      * 创建订单概要（即下单）
-     *
-     * @return
      */
     OrderDto create(OrderDto orderDto);
 
     /**
      * 通过订单id查询某个订单概要(包含订单详情，即商品信息)
-     * @return
      */
     OrderDto findOne(String orderId);
 
@@ -33,15 +30,11 @@ public interface OrderService {
 
     /**
      * 取消订单
-     *
-     * @return
      */
     OrderDto cancel(OrderDto orderDto);
 
     /**
      * 完成订单（即已接单）
-     *
-     * @return
      */
     OrderDto finish(OrderDto orderDto);
 
@@ -54,10 +47,10 @@ public interface OrderService {
     /**
      * 订单支付,openid用于验证该订单是否为该用户的 ——买家端
      */
-    void pay(String openid,String productId);
+    void pay(String openid, String productId);
 
     /**
      * 订单评论状态更改,openid用于验证该订单是否为该用户的 ——买家端
      */
-    void commented(String orderId,String openid);
+    void commented(String orderId, String openid);
 }

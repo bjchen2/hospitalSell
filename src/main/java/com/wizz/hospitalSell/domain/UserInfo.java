@@ -21,7 +21,7 @@ import java.util.Date;
 @DynamicInsert
 @DynamicUpdate
 @Entity
-public class UserInfo implements Serializable{
+public class UserInfo implements Serializable {
 
     private static final long serialVersionUID = -6303134384477906811L;
     //用户id
@@ -47,7 +47,7 @@ public class UserInfo implements Serializable{
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
-    public UserInfo(String userName, String userOpenid, String userIcon,Integer userGender) {
+    public UserInfo(String userName, String userOpenid, String userIcon, Integer userGender) {
         this.userName = userName;
         this.userOpenid = userOpenid;
         this.userIcon = userIcon;

@@ -9,7 +9,7 @@ import com.google.gson.GsonBuilder;
  */
 public class JsonUtil {
 
-    public static String toJson(Object object){
+    public static String toJson(Object object) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         //设置json格式（自动换行），一般仅调试使用，影响性能
         gsonBuilder.setPrettyPrinting();

@@ -12,7 +12,7 @@ import java.util.Date;
  * Created By Cx On 2018/8/1 21:38
  */
 @Data
-public class CommentVO implements Serializable{
+public class CommentVO implements Serializable {
 
     private static final long serialVersionUID = -7597163944152609428L;
     //商品质量评价

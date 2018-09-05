@@ -12,14 +12,14 @@ import java.util.stream.Collectors;
  */
 public class OrderDetail2VOConverter {
 
-    public static OrderDetailVO convert(OrderDetail orderDetail){
+    public static OrderDetailVO convert(OrderDetail orderDetail) {
         if (orderDetail == null) return null;
         OrderDetailVO orderDetailVO = new OrderDetailVO();
-        BeanUtils.copyProperties(orderDetail,orderDetailVO);
+        BeanUtils.copyProperties(orderDetail, orderDetailVO);
         return orderDetailVO;
     }
 
-    public static List<OrderDetailVO> convert(List<OrderDetail> orderDetails){
+    public static List<OrderDetailVO> convert(List<OrderDetail> orderDetails) {
         if (orderDetails == null) return null;
         return orderDetails.stream().map(e -> convert(e)).collect(Collectors.toList());
     }

@@ -9,7 +9,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum CommentStatusEnum implements CodeEnum{
+public enum CommentStatusEnum implements CodeEnum {
     NO_COMMENT(0, "未评论"),
     COMMENTED(1, "已评论");
 

@@ -1,7 +1,6 @@
 package com.wizz.hospitalSell.converter;
 
 import com.wizz.hospitalSell.VO.OrderMasterVO;
-import com.wizz.hospitalSell.domain.OrderMaster;
 import com.wizz.hospitalSell.dto.OrderDto;
 import org.springframework.beans.BeanUtils;
 
@@ -13,15 +12,15 @@ import java.util.stream.Collectors;
  */
 public class OrderDto2VOConverter {
 
-    public static OrderMasterVO convert(OrderDto orderDto){
+    public static OrderMasterVO convert(OrderDto orderDto) {
         if (orderDto == null) return null;
         OrderMasterVO orderMasterVO = new OrderMasterVO();
-        BeanUtils.copyProperties(orderDto,orderMasterVO);
+        BeanUtils.copyProperties(orderDto, orderMasterVO);
         orderMasterVO.setOrderDetailList(OrderDetail2VOConverter.convert(orderDto.getOrderDetailList()));
         return orderMasterVO;
     }
 
-    public static List<OrderMasterVO> convert(List<OrderDto> orderDtos){
+    public static List<OrderMasterVO> convert(List<OrderDto> orderDtos) {
         if (orderDtos == null) return null;
         return orderDtos.stream().map(e -> convert(e)).collect(Collectors.toList());
     }

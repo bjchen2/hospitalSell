@@ -1,10 +1,6 @@
 package com.wizz.hospitalSell.form;
 
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.validation.constraints.NotBlank;
-import java.util.Date;
 
 /**
  * 注意，作为接收Json的类，必须要有Get/Set方法

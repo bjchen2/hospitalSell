@@ -1,7 +1,5 @@
 package com.wizz.hospitalSell.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,7 +15,7 @@ import java.util.Date;
 @Entity
 @Data
 @DynamicInsert
-public class CommentInfo implements Serializable{
+public class CommentInfo implements Serializable {
 
     private static final long serialVersionUID = 6447964140069063033L;
 

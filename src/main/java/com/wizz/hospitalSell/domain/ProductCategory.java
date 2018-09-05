@@ -1,8 +1,6 @@
 package com.wizz.hospitalSell.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -10,7 +8,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -21,7 +18,7 @@ import java.util.Date;
 @Data
 @DynamicInsert
 @DynamicUpdate
-public class ProductCategory implements Serializable{
+public class ProductCategory implements Serializable {
 
     private static final long serialVersionUID = 4177091684550550669L;
     //类目id

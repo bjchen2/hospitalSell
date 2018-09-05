@@ -28,14 +28,14 @@ public class CategoryServiceImpl implements CategoryService {
     ProductCategoryDao categoryRepository;
 
     @Override
-    @Cacheable(cacheNames = "category",key = "#id",unless = "#result == null ")
+    @Cacheable(cacheNames = "category", key = "#id", unless = "#result == null ")
     public ProductCategory getOne(Integer id) {
         Optional<ProductCategory> category = categoryRepository.findById(id);
         return category.isPresent() ? category.get() : null;
     }
 
     @Override
-    @Cacheable(cacheNames = "category",key = "0",unless = "#result == null ")
+    @Cacheable(cacheNames = "category", key = "0", unless = "#result == null ")
     public List<ProductCategory> findAll() {
         return categoryRepository.findAll();
     }
@@ -46,19 +46,19 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    @Cacheable(cacheNames = "categoryType",key = "#type",unless = "#result == null ")
+    @Cacheable(cacheNames = "categoryType", key = "#type", unless = "#result == null ")
     public ProductCategory findByCategoryType(Integer type) {
         return categoryRepository.findByCategoryType(type);
     }
 
     @Override
     @Caching(evict = {
-            @CacheEvict(cacheNames="category",key="0"),
-            @CacheEvict(cacheNames = "category",key = "#p.categoryId"),
-            @CacheEvict(cacheNames="categoryType",key="#p.categoryType") })
+            @CacheEvict(cacheNames = "category", key = "0"),
+            @CacheEvict(cacheNames = "category", key = "#p.categoryId"),
+            @CacheEvict(cacheNames = "categoryType", key = "#p.categoryType")})
     public ProductCategory save(ProductCategory p) {
-        if (p.getCategoryType().equals(0)){
-            log.error("【修改类目】默认类目不可修改,categoryType={}",p.getCategoryType());
+        if (p.getCategoryType().equals(0)) {
+            log.error("【修改类目】默认类目不可修改,categoryType={}", p.getCategoryType());
             throw new SellException(ResultEnum.DEFAULT_CATEGORY_ERROR);
         }
         return categoryRepository.save(p);

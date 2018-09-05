@@ -24,7 +24,7 @@ import java.util.Optional;
 @Service
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
-public class ProductInfoServiceImpl implements ProductInfoService{
+public class ProductInfoServiceImpl implements ProductInfoService {
 
     @Autowired
     ProductInfoDao productInfoDao;
@@ -33,7 +33,7 @@ public class ProductInfoServiceImpl implements ProductInfoService{
     public ProductInfo findOne(String id) {
         Optional<ProductInfo> productInfo = productInfoDao.findById(id);
         //isPresent方法,判断返回的Optional是否为有价值的值（即是否不为空），若不为空则为true，否则false
-        if (productInfo.isPresent()){
+        if (productInfo.isPresent()) {
             return productInfo.get();
         }
         return null;
@@ -60,9 +60,9 @@ public class ProductInfoServiceImpl implements ProductInfoService{
     public void increaseSales(List<CartDto> cartDtoList) {
         //修改后的product列表
         List<ProductInfo> changeProducts = new ArrayList<>();
-        for (CartDto cartDto : cartDtoList){
+        for (CartDto cartDto : cartDtoList) {
             ProductInfo product = findOne(cartDto.getProductId());
-            if (product == null){
+            if (product == null) {
                 //如果商品不存在
                 throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
             }
@@ -77,15 +77,15 @@ public class ProductInfoServiceImpl implements ProductInfoService{
     @Override
     public void decreaseSales(List<CartDto> cartDtoList) {
         List<ProductInfo> changeProducts = new ArrayList<>();
-        for (CartDto cartDto : cartDtoList){
+        for (CartDto cartDto : cartDtoList) {
             ProductInfo product = findOne(cartDto.getProductId());
-            if (product == null){
+            if (product == null) {
                 //如果商品不存在
                 throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
             }
             //减库存
             int sales = product.getProductSales() - cartDto.getProductQuantity();
-            if (sales < 0){
+            if (sales < 0) {
                 //总销量小于零
                 sales = 0;
             }
@@ -98,10 +98,10 @@ public class ProductInfoServiceImpl implements ProductInfoService{
     @Override
     public ProductInfo onSale(String productId) {
         ProductInfo productInfo = findOne(productId);
-        if (productInfo == null){
+        if (productInfo == null) {
             throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
         }
-        if (ProductStatusEnum.UP.getCode().equals(productInfo.getProductStatus())){
+        if (ProductStatusEnum.UP.getCode().equals(productInfo.getProductStatus())) {
             //商品已上架
             throw new SellException(ResultEnum.PRODUCT_STATUS_ERROR);
         }
@@ -114,11 +114,11 @@ public class ProductInfoServiceImpl implements ProductInfoService{
     @Override
     public ProductInfo offSale(String productId) {
         ProductInfo productInfo = findOne(productId);
-        if (productInfo == null){
-            log.error("[商品下架]商品不存在，productId={}",productId);
+        if (productInfo == null) {
+            log.error("[商品下架]商品不存在，productId={}", productId);
             throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
         }
-        if (ProductStatusEnum.DOWN.getCode().equals(productInfo.getProductStatus())){
+        if (ProductStatusEnum.DOWN.getCode().equals(productInfo.getProductStatus())) {
             //商品已下架
             throw new SellException(ResultEnum.PRODUCT_STATUS_ERROR);
         }
@@ -131,7 +131,6 @@ public class ProductInfoServiceImpl implements ProductInfoService{
     @Override
     public List<ProductInfo> findByKey(String key) {
         key = "%".concat(key).concat("%");
-        List<ProductInfo> productInfos = productInfoDao.findByProductNameLike(key);
-        return productInfos;
+        return productInfoDao.findByProductNameLike(key);
     }
 }

@@ -27,14 +27,14 @@ public class BuyerUserController {
      */
 
     @GetMapping("/{userId}")
-    public ResultVO info(@PathVariable Integer userId){
-        if(!userService.isExistByUserId(userId)) {
+    public ResultVO info(@PathVariable Integer userId) {
+        if (!userService.isExistByUserId(userId)) {
             //如果用户不存在
             log.error("[用户查询]用户Id不存在，userId={}", userId);
             return ResultUtil.error("用户Id不存在");
         }
         UserVO userVO = new UserVO();
-        BeanUtils.copyProperties(userService.findByUserId(userId),userVO);
+        BeanUtils.copyProperties(userService.findByUserId(userId), userVO);
         return ResultUtil.success(userVO);
     }
 
@@ -42,24 +42,23 @@ public class BuyerUserController {
      * 更新用户信息
      */
     @PostMapping("/{userId}")
-    public ResultVO update(@PathVariable Integer userId , @RequestBody Map<String,String> data){
+    public ResultVO update(@PathVariable Integer userId, @RequestBody Map<String, String> data) {
         UserInfo userInfo = userService.findByUserId(userId);
-        if (data.get("userName") != null){
+        if (data.get("userName") != null) {
             userInfo.setUserName(data.get("userName"));
         }
-        if (data.get("userAddress") != null){
+        if (data.get("userAddress") != null) {
             userInfo.setUserAddress(data.get("userAddress"));
         }
-        if (data.get("userPhone") != null){
+        if (data.get("userPhone") != null) {
             userInfo.setUserPhone(data.get("userPhone"));
         }
-        if (data.get("userGender") != null){
+        if (data.get("userGender") != null) {
             userInfo.setUserGender(Integer.valueOf(data.get("userGender")));
         }
         userService.save(userInfo);
         return ResultUtil.success();
     }
-
 
 
 }

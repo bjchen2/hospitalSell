@@ -25,15 +25,13 @@ import java.util.Map;
 @Controller
 @Slf4j
 @RequestMapping("/seller/order")
-public class  SellerOrderController {
+public class SellerOrderController {
 
     @Autowired
     OrderService orderService;
 
     /**
      * 查询所有订单
-     *
-     * @return
      */
     @GetMapping("/list")
     public ModelAndView list(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size) {
@@ -49,8 +47,6 @@ public class  SellerOrderController {
 
     /**
      * 取消订单
-     *
-     * @return
      */
     @GetMapping("/cancel")
     public ModelAndView cancel(String orderId) {
@@ -71,8 +67,6 @@ public class  SellerOrderController {
 
     /**
      * 商品详情
-     *
-     * @return
      */
     @GetMapping("/detail")
     public ModelAndView detail(String orderId) {
@@ -94,8 +88,6 @@ public class  SellerOrderController {
 
     /**
      * 接订单
-     *
-     * @return
      */
     @GetMapping("/finish")
     public ModelAndView finish(String orderId) {

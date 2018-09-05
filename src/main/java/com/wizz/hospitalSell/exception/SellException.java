@@ -2,11 +2,13 @@ package com.wizz.hospitalSell.exception;
 
 import com.wizz.hospitalSell.enums.ResultEnum;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 购买异常类
  * Created By Cx On 2018/6/11 12:20
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class SellException extends RuntimeException {
     //错误码

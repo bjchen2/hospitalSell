@@ -24,34 +24,34 @@ public class WebSocket {
     private static CopyOnWriteArraySet<WebSocket> webSockets = new CopyOnWriteArraySet<>();
 
     @OnOpen
-    public void onOpen(Session session){
+    public void onOpen(Session session) {
         this.session = session;
         webSockets.add(this);
-        log.info("【webSocket消息】有新的连接，当前连接总数：{}",webSockets.size());
+        log.info("【webSocket消息】有新的连接，当前连接总数：{}", webSockets.size());
     }
 
     @OnClose
-    public void onClose(){
+    public void onClose() {
         webSockets.remove(this);
-        log.info("【webSocket消息】连接断开，当前连接总数：{}",webSockets.size());
+        log.info("【webSocket消息】连接断开，当前连接总数：{}", webSockets.size());
     }
 
     @OnMessage
-    public void onMessage(String message){
-        log.info("【webSocket消息】收到客户端消息：{}",message);
+    public void onMessage(String message) {
+        log.info("【webSocket消息】收到客户端消息：{}", message);
     }
 
     /**
      * 将消息发送给所有当前连接服务器的客户端
      */
-    public void sendMessage(String message){
-        for (WebSocket webSocket : webSockets){
-            log.info("【webSocket消息】广播消息:{}",message);
+    public void sendMessage(String message) {
+        for (WebSocket webSocket : webSockets) {
+            log.info("【webSocket消息】广播消息:{}", message);
             //try-catch捕获异常，防止异常影响正常业务
             try {
                 //发送消息
                 webSocket.session.getBasicRemote().sendText(message);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

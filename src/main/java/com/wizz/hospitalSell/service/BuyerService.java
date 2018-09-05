@@ -13,14 +13,12 @@ public interface BuyerService {
     /**
      * 通过openid和orderId查询一个订单
      * openid用于校验该订单是否为该用户，避免恶意查询
-     * @return
      */
     OrderDto findOneByOpenidAndOrderId(String openid, String orderId);
 
     /**
      * 通过openid和orderId取消订单
      * openid用于校验该订单是否为该用户，避免恶意取消
-     * @return
      */
     OrderDto cancelOneByOpenidAndOrderId(String openid, String orderId);
 }

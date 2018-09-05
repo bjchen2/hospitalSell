@@ -10,7 +10,6 @@ public class KeyUtil {
      * 生成唯一主键
      * 在一毫秒内产生冲突的可能性是 1/10000
      * synchronized关键字，防止多线程冲突
-     * @return
      */
     public static synchronized String genUniqueKey() {
         Random random = new Random();

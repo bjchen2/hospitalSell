@@ -32,23 +32,24 @@ public class SellerAuthorizeAspect {
 
     //切点范围为com.wizz.hospitalSell.controller包下所有Seller*
     @Pointcut("execution(public * com.wizz.hospitalSell.controller..Seller*.*(..))")
-    public void verify(){}
+    public void verify() {
+    }
 
     @Before("verify()")
-    public void doVerify(){
+    public void doVerify() {
         //获取HttpHttpServletRequest
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         //获取cookie
         Cookie cookie = CookieUtil.getCookie(request, CookieConstant.TOKEN);
-        if (cookie == null){
+        if (cookie == null) {
             //如果cookie不存在
             log.warn("【登陆校验】登录失败，cookie为空");
             throw new SellerAuthorizeException();
         }
         //从redis中获取token值
-        String token = redisTemplate.opsForValue().get(String.format(RedisConstant.TOKEN_PREFIX,cookie.getValue()));
-        if (StringUtils.isEmpty(token)){
+        String token = redisTemplate.opsForValue().get(String.format(RedisConstant.TOKEN_PREFIX, cookie.getValue()));
+        if (StringUtils.isEmpty(token)) {
             //如果redis中不存在,说明该token已被篡改
             log.warn("【登陆校验】登录失败，redis查询为空");
             throw new SellerAuthorizeException();

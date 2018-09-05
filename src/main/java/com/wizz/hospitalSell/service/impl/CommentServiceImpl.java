@@ -11,7 +11,6 @@ import com.wizz.hospitalSell.domain.ProductInfo;
 import com.wizz.hospitalSell.domain.UserInfo;
 import com.wizz.hospitalSell.dto.OrderDto;
 import com.wizz.hospitalSell.dto.ProductCommentDto;
-import com.wizz.hospitalSell.enums.CommentStatusEnum;
 import com.wizz.hospitalSell.enums.PayStatusEnum;
 import com.wizz.hospitalSell.enums.ResultEnum;
 import com.wizz.hospitalSell.exception.SellException;
@@ -19,7 +18,6 @@ import com.wizz.hospitalSell.service.CommentService;
 import com.wizz.hospitalSell.service.OrderService;
 import com.wizz.hospitalSell.utils.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.Cache;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -38,7 +36,7 @@ import java.util.Map;
 @Service
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
-public class CommentServiceImpl implements CommentService{
+public class CommentServiceImpl implements CommentService {
 
     @Autowired
     CommentInfoRepository commentInfoRepository;
@@ -51,15 +49,15 @@ public class CommentServiceImpl implements CommentService{
     @Autowired
     OrderService orderService;
 
-    List<ProductCommentDto> findDtosByProductInfos(List<ProductInfo> productInfos){
+    List<ProductCommentDto> findDtosByProductInfos(List<ProductInfo> productInfos) {
         List<ProductCommentDto> productCommentDtos = new ArrayList<>();
-        for (ProductInfo productInfo : productInfos){
+        for (ProductInfo productInfo : productInfos) {
             //star为总星数，num为总评价数，result=star/num
             ProductCommentDto productCommentDto = new ProductCommentDto();
             //设置productCommentDto属性
             productCommentDto.setProductId(productInfo.getProductId());
             productCommentDto.setProductName(productInfo.getProductName());
-            Map<String,Object> m = commentInfoDao.findScoreMapByProductId(productInfo.getProductId());
+            Map<String, Object> m = commentInfoDao.findScoreMapByProductId(productInfo.getProductId());
             productCommentDto.setPackingScore((Map<String, Integer>) m.get("packingScore"));
             productCommentDto.setQualityScore((Map<String, Integer>) m.get("qualityScore"));
             productCommentDto.setTasteScore((Map<String, Integer>) m.get("tasteScore"));
@@ -71,22 +69,22 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    @Cacheable(cacheNames = "comment", key = "#productId",unless = "#result == null ")
+    @Cacheable(cacheNames = "comment", key = "#productId", unless = "#result == null ")
     public List<CommentVO> findInfosByProductId(String productId) {
         List<CommentInfo> commentInfos = commentInfoRepository.findAllByProductIdOrderByCreateTimeDesc(productId);
         List<CommentVO> commentVOs = new ArrayList<>();
-        for (CommentInfo commentInfo : commentInfos){
+        for (CommentInfo commentInfo : commentInfos) {
             CommentVO commentVO = new CommentVO();
             //通过openid查询用户信息
             UserInfo userInfo = userInfoDao.findByUserOpenid(commentInfo.getUserOpenid());
-            if (userInfo == null){
+            if (userInfo == null) {
                 //如果某条评论的用户信息缺失，直接跳过，即不添加该评论
                 continue;
             }
             //将评论信息赋值给VO
-            BeanUtils.copyProperties(commentInfo,commentVO);
+            BeanUtils.copyProperties(commentInfo, commentVO);
             //将用户信息赋值给VO
-            BeanUtils.copyProperties(userInfo,commentVO);
+            BeanUtils.copyProperties(userInfo, commentVO);
             //添加进返回列表
             commentVOs.add(commentVO);
         }
@@ -96,15 +94,15 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public List<CommentDetailVO> findByOrderId(String orderId) {
         List<CommentInfo> commentInfos = commentInfoRepository.findAllByOrderId(orderId);
-        if (commentInfos.isEmpty()){
-            log.error("[获取评论]该订单暂无评论，orderId={}",orderId);
+        if (commentInfos.isEmpty()) {
+            log.error("[获取评论]该订单暂无评论，orderId={}", orderId);
         }
         List<CommentDetailVO> commentDetailVOs = new ArrayList<>();
-        for (CommentInfo commentInfo : commentInfos){
+        for (CommentInfo commentInfo : commentInfos) {
             CommentDetailVO commentDetailVO = new CommentDetailVO();
             ProductInfo productInfo = productInfoDao.getOne(commentInfo.getProductId());
             //将评论信息赋值给VO
-            BeanUtils.copyProperties(commentInfo,commentDetailVO);
+            BeanUtils.copyProperties(commentInfo, commentDetailVO);
             //将商品信息赋值给VO
             commentDetailVO.setProductIcon(productInfo.getProductIcon());
             commentDetailVO.setProductName(productInfo.getProductName());
@@ -115,7 +113,7 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    @Cacheable(cacheNames = "comment", key = "0",unless = "#result == null ")
+    @Cacheable(cacheNames = "comment", key = "0", unless = "#result == null ")
     public List<ProductCommentDto> findAllDtos() {
         List<ProductInfo> productInfos = productInfoDao.findAll();
         return findDtosByProductInfos(productInfos);
@@ -131,20 +129,20 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     @Caching(evict = {
-            @CacheEvict(cacheNames="comment",key="0"),
-            @CacheEvict(cacheNames="comment",key="#commentInfo.productId") })
+            @CacheEvict(cacheNames = "comment", key = "0"),
+            @CacheEvict(cacheNames = "comment", key = "#commentInfo.productId")})
     public CommentInfo create(CommentInfo commentInfo) {
-        if (!productInfoDao.existsById(commentInfo.getProductId())){
-            log.error("[商品评价]商品不存在，productId={}",commentInfo.getProductId());
+        if (!productInfoDao.existsById(commentInfo.getProductId())) {
+            log.error("[商品评价]商品不存在，productId={}", commentInfo.getProductId());
             throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
         }
         OrderDto orderDto = orderService.findOne(commentInfo.getOrderId());
-        if (!orderDto.getPayStatus().equals(PayStatusEnum.SUCCESS)){
-            log.error("[商品评价]该订单未支付，不能评价，orderId={}",commentInfo.getOrderId());
+        if (!orderDto.getPayStatus().equals(PayStatusEnum.SUCCESS.getCode())) {
+            log.error("[商品评价]该订单未支付，不能评价，orderId={}", commentInfo.getOrderId());
             throw new SellException(ResultEnum.ORDER_PAY_STATUS_ERROR);
         }
         //将订单的评论状态设为已评论
-        orderService.commented(commentInfo.getOrderId(),commentInfo.getUserOpenid());
+        orderService.commented(commentInfo.getOrderId(), commentInfo.getUserOpenid());
         //设置评论主键
         commentInfo.setCommentId(KeyUtil.genUniqueKey());
         return commentInfoRepository.save(commentInfo);

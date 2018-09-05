@@ -5,7 +5,6 @@ import com.wizz.hospitalSell.config.ProjectConfig;
 import com.wizz.hospitalSell.constant.CookieConstant;
 import com.wizz.hospitalSell.constant.RedisConstant;
 import com.wizz.hospitalSell.domain.AdminInfo;
-import com.wizz.hospitalSell.domain.UserInfo;
 import com.wizz.hospitalSell.enums.ResultEnum;
 import com.wizz.hospitalSell.form.LoginForm;
 import com.wizz.hospitalSell.form.RegisterForm;
@@ -50,11 +49,10 @@ public class AdminController {
 
     /**
      * 登录页面跳转路由
-     * @return
      */
     @GetMapping("/index")
     public ModelAndView index(HttpServletRequest request) {
-        if (CookieUtil.getCookie(request,CookieConstant.TOKEN) != null){
+        if (CookieUtil.getCookie(request, CookieConstant.TOKEN) != null) {
             //如果cookie存在
             return new ModelAndView("redirect:" + projectConfig.getSell() + "/seller/order/list");
         }
@@ -65,7 +63,7 @@ public class AdminController {
      * 管理员登录路由
      */
     @PostMapping("/login")
-    public ModelAndView login(@Valid LoginForm loginForm, BindingResult bindingResult,HttpServletResponse response) {
+    public ModelAndView login(@Valid LoginForm loginForm, BindingResult bindingResult, HttpServletResponse response) {
         Map<String, Object> m = new HashMap<>();
         AdminInfo adminInfo = new AdminInfo();
         if (bindingResult.hasErrors()) {
@@ -73,7 +71,7 @@ public class AdminController {
             m.put("error", bindingResult.getFieldError().getDefaultMessage());
             return new ModelAndView("common/index", m);
         }
-        BeanUtils.copyProperties(loginForm,adminInfo);
+        BeanUtils.copyProperties(loginForm, adminInfo);
         //1.在数据库中查询该用户是否存在
         if (!adminService.isAdminExist(adminInfo)) {
             m.put("error", ResultEnum.LOGIN_FAIL.getMsg());
@@ -85,10 +83,10 @@ public class AdminController {
         String token = UUID.randomUUID().toString();
         //过期时间，expire:期满
         Integer expire;
-        if (loginForm.getRemember() != null){
+        if (loginForm.getRemember() != null) {
             //如果记住登录状态
             expire = RedisConstant.REMEMBER;
-        }else {
+        } else {
             expire = RedisConstant.EXPIRE;
         }
         //opsForValue表示对某个值进行操作，set参数：key、value、过期时间、时间单位
@@ -122,40 +120,40 @@ public class AdminController {
      * 新增管理员页面跳转
      */
     @GetMapping("/register")
-    public ModelAndView register(@RequestParam(required = false) String error, HttpServletRequest request) {
+    public ModelAndView register(@RequestParam(required = false) String error) {
         Map<String, Object> m = new HashMap<>();
-        if (error != null) m.put("error",error);
-        return new ModelAndView("common/register",m);
+        if (error != null) m.put("error", error);
+        return new ModelAndView("common/register", m);
     }
 
     /**
      * 管理员注册操作
      */
     @PostMapping("/register")
-    public ModelAndView doRegister(@Valid RegisterForm registerForm,BindingResult bindingResult) {
-        Map<String,Object> m = new HashMap<>();
+    public ModelAndView doRegister(@Valid RegisterForm registerForm, BindingResult bindingResult) {
+        Map<String, Object> m = new HashMap<>();
         AdminInfo adminInfo = new AdminInfo();
         if (bindingResult.hasErrors()) {
             log.error("[新增管理员]参数不正确,{}", bindingResult.getFieldError().getDefaultMessage());
             m.put("error", bindingResult.getFieldError().getDefaultMessage());
             return new ModelAndView("common/register", m);
         }
-        BeanUtils.copyProperties(registerForm,adminInfo);
-        if (!adminService.isAdminExist(adminInfo)){
+        BeanUtils.copyProperties(registerForm, adminInfo);
+        if (!adminService.isAdminExist(adminInfo)) {
             //若已有管理员不存在
-            log.error("[新增管理员]已有管理员账号或密码有误,adminName={},adminPass={}",adminInfo.getAdminName(),adminInfo.getAdminPass());
-            m.put("error","已有管理员账号或密码有误");
-            return new ModelAndView("common/register",m);
+            log.error("[新增管理员]已有管理员账号或密码有误,adminName={},adminPass={}", adminInfo.getAdminName(), adminInfo.getAdminPass());
+            m.put("error", "已有管理员账号或密码有误");
+            return new ModelAndView("common/register", m);
         }
-        if (adminService.isAdminNameExist(registerForm.getNewAdminName())){
-            log.error("[新增管理员]新增管理员用户名已存在,adminName={}",registerForm.getNewAdminName());
-            m.put("error","新增管理员用户名已存在");
-            return new ModelAndView("common/register",m);
+        if (adminService.isAdminNameExist(registerForm.getNewAdminName())) {
+            log.error("[新增管理员]新增管理员用户名已存在,adminName={}", registerForm.getNewAdminName());
+            m.put("error", "新增管理员用户名已存在");
+            return new ModelAndView("common/register", m);
         }
-        adminInfo = new AdminInfo(registerForm.getNewAdminName(),registerForm.getNewAdminPass());
+        adminInfo = new AdminInfo(registerForm.getNewAdminName(), registerForm.getNewAdminPass());
         adminService.create(adminInfo);
         m.put("url", "/admin/index");
-        m.put("msg","添加管理员成功");
-        return new ModelAndView("common/success",m);
+        m.put("msg", "添加管理员成功");
+        return new ModelAndView("common/success", m);
     }
 }

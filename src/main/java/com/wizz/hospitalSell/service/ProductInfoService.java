@@ -15,29 +15,21 @@ public interface ProductInfoService {
 
     /**
      * 根据id查询商品信息
-     *
-     * @return
      */
     ProductInfo findOne(String id);
 
     /**
      * 查询所有上架商品   --客户端使用
-     *
-     * @return
      */
     List<ProductInfo> findUpAll();
 
     /**
      * 根据分页条件，按时间排序，返回所有商品信息    --服务端使用
-     *
-     * @return
      */
     Page<ProductInfo> findAll(Pageable pageable);
 
     /**
      * 添加商品
-     *
-     * @return
      */
     ProductInfo save(ProductInfo product);
 

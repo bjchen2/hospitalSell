@@ -22,37 +22,37 @@ public class CommentInfoDao {
     /**
      * 查询某商品的各个评价
      */
-    public Map<String,Object> findScoreMapByProductId(String productId){
+    public Map<String, Object> findScoreMapByProductId(String productId) {
         //查询该商品的所有评论
         List<CommentInfo> commentInfos = commentMapper.findScoreByProductId(productId);
-        Map<String,Object> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
         //格式为："1"-5，表示1星的有五人
-        Map<String,Integer> qualityScore = new HashMap<>();
-        Map<String,Integer> tasteScore = new HashMap<>();
-        Map<String,Integer> packingScore = new HashMap<>();
+        Map<String, Integer> qualityScore = new HashMap<>();
+        Map<String, Integer> tasteScore = new HashMap<>();
+        Map<String, Integer> packingScore = new HashMap<>();
         //总评
         double ans = 0;
         //分别表示PackingScore、QualityScore、TasteScore,1-5星人数
-        int[] a={0,0,0,0,0},b={0,0,0,0,0},c={0,0,0,0,0};
-        for (CommentInfo commentInfo : commentInfos){
-            a[commentInfo.getPackingScore()-1]++;
-            b[commentInfo.getQualityScore()-1]++;
-            c[commentInfo.getTasteScore()-1]++;
+        int[] a = {0, 0, 0, 0, 0}, b = {0, 0, 0, 0, 0}, c = {0, 0, 0, 0, 0};
+        for (CommentInfo commentInfo : commentInfos) {
+            a[commentInfo.getPackingScore() - 1]++;
+            b[commentInfo.getQualityScore() - 1]++;
+            c[commentInfo.getTasteScore() - 1]++;
         }
-        for(int i = 0;i < 5;i++){
-            packingScore.put(String.valueOf(i+1),a[i]);
-            qualityScore.put(String.valueOf(i+1),b[i]);
-            tasteScore.put(String.valueOf(i+1),c[i]);
-            ans += (a[i]+b[i]+c[i])*(i+1);
+        for (int i = 0; i < 5; i++) {
+            packingScore.put(String.valueOf(i + 1), a[i]);
+            qualityScore.put(String.valueOf(i + 1), b[i]);
+            tasteScore.put(String.valueOf(i + 1), c[i]);
+            ans += (a[i] + b[i] + c[i]) * (i + 1);
         }
-        result.put("result",commentInfos.size()==0?0:ans/3.0/commentInfos.size());
-        result.put("qualityScore",qualityScore);
-        result.put("tasteScore",tasteScore);
-        result.put("packingScore",qualityScore);
+        result.put("result", commentInfos.size() == 0 ? 0 : ans / 3.0 / commentInfos.size());
+        result.put("qualityScore", qualityScore);
+        result.put("tasteScore", tasteScore);
+        result.put("packingScore", packingScore);
         return result;
     }
 
-    public Integer findResultByProductId(String productId){
+    public Integer findResultByProductId(String productId) {
         Double result = commentMapper.findResultByProductId(productId);
         //Math.round四舍五入返回long，转为string再转为int
         if (result == null) {

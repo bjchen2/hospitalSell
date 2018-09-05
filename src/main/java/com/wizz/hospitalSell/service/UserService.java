@@ -17,9 +17,9 @@ public interface UserService {
      * 查询某个用户
      */
     UserInfo findByOpenid(String openId);
+
     /**
      * 根据userId来查询用户
-     *
      */
 
     UserInfo findByUserId(Integer userId);

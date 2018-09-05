@@ -39,21 +39,21 @@ public class BuyerProductController {
     @Autowired
     CommentService commentService;
 
-    public ProductInfoVO convert(ProductInfo productInfo){
+    public ProductInfoVO convert(ProductInfo productInfo) {
         if (productInfo == null) return null;
         ProductInfoVO productInfoVO = new ProductInfoVO();
-        BeanUtils.copyProperties(productInfo,productInfoVO);
+        BeanUtils.copyProperties(productInfo, productInfoVO);
         productInfoVO.setProductScore(commentService.findResultByProductId(productInfoVO.getProductId()));
         return productInfoVO;
     }
 
-    public List<ProductInfoVO> convert(List<ProductInfo> productInfos){
+    public List<ProductInfoVO> convert(List<ProductInfo> productInfos) {
         if (productInfos == null) return null;
         return productInfos.stream().map(e -> convert(e)).collect(Collectors.toList());
     }
 
     @GetMapping("/list")
-    public ResultVO list(@RequestParam(defaultValue = "1")Integer sort){
+    public ResultVO list(@RequestParam(defaultValue = "1") Integer sort) {
         //获取所有上架商品
         List<ProductInfo> products = productInfoService.findUpAll();
         List<Integer> productTypes = products.stream().map(o -> o.getCategoryType()).collect(Collectors.toList());
@@ -72,10 +72,10 @@ public class BuyerProductController {
             }
             //将ProductInfo转换为ProductInfoVO
             List<ProductInfoVO> foods = convert(temp);
-            if (sort.equals(ProductSortEnum.PRICE.getCode())){
+            if (sort.equals(ProductSortEnum.PRICE.getCode())) {
                 //按商品价格的增序排序
                 foods.sort(Comparator.comparing(ProductInfoVO::getProductPrice));
-            }else {
+            } else {
                 //按商品评分的降序排序
                 foods.sort((o1, o2) -> o2.getProductScore() - o1.getProductScore());
             }
@@ -86,7 +86,7 @@ public class BuyerProductController {
     }
 
     @GetMapping("/key")
-    public ResultVO findByKey(String key){
+    public ResultVO findByKey(String key) {
         List<ProductInfoVO> productInfoVOs = convert(productInfoService.findByKey(key));
         return ResultUtil.success(productInfoVOs);
     }

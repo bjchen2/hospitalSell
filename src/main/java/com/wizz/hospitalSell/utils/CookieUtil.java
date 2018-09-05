@@ -13,8 +13,8 @@ public class CookieUtil {
     /**
      * 设置cookie值
      */
-    public static void setCookie(HttpServletResponse response,String key,String value,Integer expire){
-        Cookie cookie = new Cookie(key,value);
+    public static void setCookie(HttpServletResponse response, String key, String value, Integer expire) {
+        Cookie cookie = new Cookie(key, value);
         cookie.setPath("/");
         cookie.setMaxAge(expire);
         response.addCookie(cookie);
@@ -23,11 +23,11 @@ public class CookieUtil {
     /**
      * 获取key为name的cookie
      */
-    public static Cookie getCookie(HttpServletRequest request,String name){
+    public static Cookie getCookie(HttpServletRequest request, String name) {
         Cookie[] cookies = request.getCookies();
         if (cookies == null) return null;
-        for (Cookie cookie : cookies){
-            if (cookie.getName().equals(name)){
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals(name)) {
                 return cookie;
             }
         }

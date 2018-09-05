@@ -50,12 +50,12 @@ public class OrderDto {
 
     //使用@JsonIgnore注解，使其形成json的时候忽略该方法
     @JsonIgnore
-    public OrderStatusEnum getOrderStatusEnum(){
-        return EnumUtil.getByCode(orderStatus,OrderStatusEnum.class);
+    public OrderStatusEnum getOrderStatusEnum() {
+        return EnumUtil.getByCode(orderStatus, OrderStatusEnum.class);
     }
 
     @JsonIgnore
-    public PayStatusEnum getPayStatusEnum(){
-        return EnumUtil.getByCode(payStatus,PayStatusEnum.class);
+    public PayStatusEnum getPayStatusEnum() {
+        return EnumUtil.getByCode(payStatus, PayStatusEnum.class);
     }
 }

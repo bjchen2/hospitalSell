@@ -11,9 +11,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum GenderEnum implements CodeEnum {
 
-    UNKNOWN(0,"未知"),
-    MAN(1,"男性"),
-    WOMAN(2,"女性");
+    UNKNOWN(0, "未知"),
+    MAN(1, "男性"),
+    WOMAN(2, "女性");
 
     //状态码
     private Integer code;

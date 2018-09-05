@@ -1,7 +1,5 @@
 package com.wizz.hospitalSell.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,7 +17,7 @@ import java.util.Date;
 public class AdminInfo {
     //管理员id
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)//JPA提供四种方法，自增性用identity.
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//JPA提供四种方法，自增性用identity.
     private Integer adminId;//integer是int的封装类，为什么要用integer来存储。
     //管理员用户名
     private String adminName;

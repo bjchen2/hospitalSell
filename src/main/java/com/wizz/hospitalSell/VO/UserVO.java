@@ -26,7 +26,7 @@ public class UserVO {
     //用户电话
     private String userPhone;
 
-    public UserVO(){
+    public UserVO() {
 
     }
 }

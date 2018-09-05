@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
-public class OrderServiceImpl implements OrderService{
+public class OrderServiceImpl implements OrderService {
 
     @Autowired
     OrderDetailDao orderDetailDao;
@@ -71,7 +71,7 @@ public class OrderServiceImpl implements OrderService{
                 throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
             }
             //将商品加入购物车
-            cartDtos.add(new CartDto(orderDetail.getProductId(),orderDetail.getProductQuantity()));
+            cartDtos.add(new CartDto(orderDetail.getProductId(), orderDetail.getProductQuantity()));
             //将orderDetail信息补全
             BeanUtils.copyProperties(p, orderDetail);
             orderDetail.setOrderId(orderId);
@@ -99,18 +99,18 @@ public class OrderServiceImpl implements OrderService{
     public OrderDto findOne(String orderId) {
         Optional<OrderMaster> orderMaster = orderMasterDao.findById(orderId);
         List<OrderDetail> orderDetails = orderDetailDao.findByOrderId(orderId);
-        if (!orderMaster.isPresent()){
+        if (!orderMaster.isPresent()) {
             //若订单概要不存在
-            log.error("订单不存在，orderId={}",orderId);
+            log.error("订单不存在，orderId={}", orderId);
             throw new SellException(ResultEnum.ORDER_NOT_EXIST);
         }
-        if (orderDetails == null){
+        if (orderDetails == null) {
             //若订单详情不存在
-            log.error("订单详情不存在，orderId={}",orderId);
+            log.error("订单详情不存在，orderId={}", orderId);
             throw new SellException(ResultEnum.ORDER_DETAIL_NOT_EXIST);
         }
         OrderDto orderDto = new OrderDto();
-        BeanUtils.copyProperties(orderMaster.get(),orderDto);
+        BeanUtils.copyProperties(orderMaster.get(), orderDto);
         orderDto.setOrderDetailList(orderDetails);
         return orderDto;
     }
@@ -118,34 +118,34 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public Page<OrderDto> findList(Pageable pageable) {
         Page<OrderMaster> orderMasterPage = orderMasterDao.findAllByOrderByCreateTimeDesc(pageable);
-        return new PageImpl<OrderDto>(OrderMaster2DtoConverter.convert(orderMasterPage.getContent()),pageable,
+        return new PageImpl<>(OrderMaster2DtoConverter.convert(orderMasterPage.getContent()), pageable,
                 orderMasterPage.getTotalElements());
     }
 
     @Override
     public OrderDto cancel(OrderDto orderDto) {
         //判断订单状态是否可取消(只有新下单状态可取消订单)
-        if (!orderDto.getOrderStatus().equals(OrderStatusEnum.NEW.getCode()) ){
-            log.error("[取消订单]订单状态不正确，orderId={},orderStatus={}",orderDto.getOrderId(),orderDto.getOrderStatus());
+        if (!orderDto.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
+            log.error("[取消订单]订单状态不正确，orderId={},orderStatus={}", orderDto.getOrderId(), orderDto.getOrderStatus());
             throw new SellException(ResultEnum.ORDER_STATUS_ERROR);
         }
         //修改状态并保存
         orderDto.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
         //若已支付，则退款
-        if (orderDto.getPayStatus().equals(PayStatusEnum.SUCCESS.getCode())){
+        if (orderDto.getPayStatus().equals(PayStatusEnum.SUCCESS.getCode())) {
             //退款
             //修改订单状态
             orderDto.setPayStatus(PayStatusEnum.WAIT.getCode());
         }
         OrderMaster orderMaster = new OrderMaster();
-        BeanUtils.copyProperties(orderDto,orderMaster);
+        BeanUtils.copyProperties(orderDto, orderMaster);
         orderMasterDao.save(orderMaster);
         //将取消订单的商品返回库存
-        if (CollectionUtils.isEmpty(orderDto.getOrderDetailList())){
+        if (CollectionUtils.isEmpty(orderDto.getOrderDetailList())) {
             //如果商品详情为空，则不需要商品减销量
             return orderDto;
         }
-        List<CartDto> cartDtos = orderDto.getOrderDetailList().stream().map(e -> new CartDto(e.getProductId(),e.getProductQuantity()))
+        List<CartDto> cartDtos = orderDto.getOrderDetailList().stream().map(e -> new CartDto(e.getProductId(), e.getProductQuantity()))
                 .collect(Collectors.toList());
         productInfoService.decreaseSales(cartDtos);
         return orderDto;
@@ -154,18 +154,18 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public OrderDto finish(OrderDto orderDto) {
         //判断订单状态
-        if (!orderDto.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())){
-            log.error("[接订单]订单状态不正确，orderId={},orderStatus={}",orderDto.getOrderId(),orderDto.getOrderStatus());
+        if (!orderDto.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
+            log.error("[接订单]订单状态不正确，orderId={},orderStatus={}", orderDto.getOrderId(), orderDto.getOrderStatus());
             throw new SellException(ResultEnum.ORDER_STATUS_ERROR);
         }
-        if (!orderDto.getPayStatus().equals(PayStatusEnum.SUCCESS.getCode())){
-            log.error("[接订单]该订单未付款，orderId={},payStatus={}",orderDto.getOrderId(),orderDto.getPayStatus());
+        if (!orderDto.getPayStatus().equals(PayStatusEnum.SUCCESS.getCode())) {
+            log.error("[接订单]该订单未付款，orderId={},payStatus={}", orderDto.getOrderId(), orderDto.getPayStatus());
             throw new SellException(ResultEnum.ORDER_PAY_STATUS_ERROR);
         }
         //修改订单状态并存储
         orderDto.setOrderStatus(OrderStatusEnum.FINISHED.getCode());
         OrderMaster orderMaster = new OrderMaster();
-        BeanUtils.copyProperties(orderDto,orderMaster);
+        BeanUtils.copyProperties(orderDto, orderMaster);
         orderMasterDao.save(orderMaster);
         return orderDto;
     }
@@ -174,9 +174,9 @@ public class OrderServiceImpl implements OrderService{
     public List<OrderMasterVO> findByOpenid(String openid) {
         List<OrderMaster> orderMasters = orderMasterDao.findByUserOpenid(openid);
         List<OrderMasterVO> orderMasterVOs = new ArrayList<>();
-        for (OrderMaster orderMaster : orderMasters){
+        for (OrderMaster orderMaster : orderMasters) {
             List<OrderDetail> orderDetails = orderDetailDao.findByOrderId(orderMaster.getOrderId());
-            List<OrderDetailVO> orderDetailVOs =  OrderDetail2VOConverter.convert(orderDetails);
+            List<OrderDetailVO> orderDetailVOs = OrderDetail2VOConverter.convert(orderDetails);
             OrderMasterVO orderMasterVO = OrderMaster2VOController.convert(orderMaster);
             orderMasterVO.setOrderDetailList(orderDetailVOs);
             orderMasterVOs.add(orderMasterVO);
@@ -187,17 +187,17 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public void pay(String openid, String orderId) {
         OrderDto orderDto = findOne(orderId);
-        if (!openid.equals(orderDto.getUserOpenid())){
-            log.error("[支付订单]订单支付失败，该订单不属于该用户，openid={}.orderOpenid={}",openid,orderDto.getUserOpenid());
+        if (!openid.equals(orderDto.getUserOpenid())) {
+            log.error("[支付订单]订单支付失败，该订单不属于该用户，openid={}.orderOpenid={}", openid, orderDto.getUserOpenid());
             throw new SellException(ResultEnum.ORDER_OWNER_ERROR);
         }
-        if (!orderDto.getPayStatus().equals(PayStatusEnum.WAIT.getCode())){
-            log.error("[支付订单]订单支付失败，订单状态非未支付，payStatus={}",orderDto.getPayStatus());
+        if (!orderDto.getPayStatus().equals(PayStatusEnum.WAIT.getCode())) {
+            log.error("[支付订单]订单支付失败，订单状态非未支付，payStatus={}", orderDto.getPayStatus());
             throw new SellException(ResultEnum.ORDER_PAY_STATUS_ERROR);
         }
         orderDto.setPayStatus(PayStatusEnum.SUCCESS.getCode());
         OrderMaster orderMaster = new OrderMaster();
-        BeanUtils.copyProperties(orderDto,orderMaster);
+        BeanUtils.copyProperties(orderDto, orderMaster);
         orderMasterDao.save(orderMaster);
         //webSocket发送消息，告知卖家有新订单
         webSocket.sendMessage(orderMaster.getOrderId());
@@ -206,21 +206,21 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public void commented(String orderId, String openid) {
         OrderDto orderDto = findOne(orderId);
-        if (orderDto == null){
-            log.error("[商品评价]订单不存在，orderId={}",orderId);
+        if (orderDto == null) {
+            log.error("[商品评价]订单不存在，orderId={}", orderId);
             throw new SellException(ResultEnum.ORDER_NOT_EXIST);
         }
-        if (!orderDto.getUserOpenid().equals(openid)){
-            log.error("[商品评价]订单不属于该用户，orderId={},userOpenid={}",orderId,openid);
+        if (!orderDto.getUserOpenid().equals(openid)) {
+            log.error("[商品评价]订单不属于该用户，orderId={},userOpenid={}", orderId, openid);
             throw new SellException(ResultEnum.ORDER_OWNER_ERROR);
         }
-        if (orderDto.getCommentStatus().equals(CommentStatusEnum.COMMENTED.getCode())){
-            log.error("[商品评价]该订单已评论，orderId={}",orderId);
+        if (orderDto.getCommentStatus().equals(CommentStatusEnum.COMMENTED.getCode())) {
+            log.error("[商品评价]该订单已评论，orderId={}", orderId);
             throw new SellException(ResultEnum.ORDER_COMMENTED);
         }
         orderDto.setCommentStatus(CommentStatusEnum.COMMENTED.getCode());
         OrderMaster orderMaster = new OrderMaster();
-        BeanUtils.copyProperties(orderDto,orderMaster);
+        BeanUtils.copyProperties(orderDto, orderMaster);
         orderMasterDao.save(orderMaster);
     }
 

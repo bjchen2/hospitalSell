@@ -2,10 +2,7 @@ package com.wizz.hospitalSell.controller;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
-import cn.binarywang.wx.miniapp.bean.WxMaMessage;
 import cn.binarywang.wx.miniapp.bean.WxMaUserInfo;
-import cn.binarywang.wx.miniapp.constant.WxMaConstants;
-import cn.binarywang.wx.miniapp.message.WxMaMessageRouter;
 import com.wizz.hospitalSell.VO.ResultVO;
 import com.wizz.hospitalSell.VO.UserVO;
 import com.wizz.hospitalSell.domain.UserInfo;
@@ -19,8 +16,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -42,7 +37,7 @@ public class WxController {
      * 登陆接口
      */
     @PostMapping("/login")
-    public ResultVO login(@RequestBody WxInfo wxInfo, HttpServletResponse response, HttpServletRequest request) {
+    public ResultVO login(@RequestBody WxInfo wxInfo) {
         if (StringUtils.isBlank(wxInfo.getCode())) {
             return ResultUtil.error("empty code");
         }
@@ -53,13 +48,13 @@ public class WxController {
             log.info(session.getOpenid());
             //存储用户信息
             UserInfo userInfo = userService.findByOpenid(session.getOpenid());
-            if (userInfo == null){
+            if (userInfo == null) {
                 //若用户第一次登录,获取并存储用户信息
                 WxMaUserInfo wxUserInfo = wxService.getUserService().getUserInfo(session.getSessionKey(), wxInfo.getEncryptedData(), wxInfo.getIv());
-                userInfo = userService.save(new UserInfo(wxUserInfo.getNickName(),wxUserInfo.getOpenId(),wxUserInfo.getAvatarUrl(),Integer.valueOf(wxUserInfo.getGender())));
+                userInfo = userService.save(new UserInfo(wxUserInfo.getNickName(), wxUserInfo.getOpenId(), wxUserInfo.getAvatarUrl(), Integer.valueOf(wxUserInfo.getGender())));
             }
             UserVO userVO = new UserVO();
-            BeanUtils.copyProperties(userInfo,userVO);
+            BeanUtils.copyProperties(userInfo, userVO);
             return ResultUtil.success(userVO);
         } catch (WxErrorException e) {
             log.error(e.getMessage(), e);

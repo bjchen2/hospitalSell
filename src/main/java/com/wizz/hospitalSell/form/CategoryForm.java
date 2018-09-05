@@ -17,6 +17,6 @@ public class CategoryForm {
     @NotBlank(message = "名称不能为空")
     private String categoryName;
     //类目编号
-    @Min(value = 1,message = "type必须大于0")
+    @Min(value = 1, message = "type必须大于0")
     private Integer categoryType;
 }

@@ -3,7 +3,6 @@ package com.wizz.hospitalSell.service;
 import com.wizz.hospitalSell.VO.CommentDetailVO;
 import com.wizz.hospitalSell.VO.CommentVO;
 import com.wizz.hospitalSell.domain.CommentInfo;
-import com.wizz.hospitalSell.domain.ProductInfo;
 import com.wizz.hospitalSell.dto.ProductCommentDto;
 
 import java.util.List;
