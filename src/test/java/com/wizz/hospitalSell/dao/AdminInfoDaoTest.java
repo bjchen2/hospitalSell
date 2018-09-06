@@ -1,5 +1,6 @@
 package com.wizz.hospitalSell.dao;
 
+import com.wizz.hospitalSell.utils.JsonUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.Jedis;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -23,9 +27,14 @@ public class AdminInfoDaoTest {
 
     @Test
     public void existsByAdminNameAndAdminPass() {
-        Jedis jedis = new Jedis("120.78.131.71",6379);
-        System.out.println("连接成功");
-        jedis.lpush("abcd", "123");
+//        Jedis jedis = new Jedis("120.78.131.71",6379);
+//        System.out.println("连接成功");
+//        jedis.lpush("abcd", "123");
+        List<Integer> a = new ArrayList<>();
+        a.add(3);
+        a.add(5);
+        a.add(7);
+        System.out.println(JsonUtil.toJson(a));
     }
 
     @Test

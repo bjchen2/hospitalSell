@@ -31,6 +31,7 @@
                             <label">图片</label>
                             <img height="100" width="100" src="${(productInfo.productIcon)!''}">
                             <input name="productIcon" type="text" class="form-control" value="${(productInfo.productIcon)!''}"/>
+                            <p><b>Note</b>:请填写商品图片的网址，如：www.xxx.com/xxx.jpg</p>
                         </div>
                         <div class="form-group">
                             <label">类目</label>

@@ -56,4 +56,9 @@ public class OrderServiceImplTest {
     @Test
     public void finish() {
     }
+
+    @Test
+    public void commented(){
+        orderService.commented("15362452348895471","oE3wM5I60PBz2cEfeWqumbS1gHkU");
+    }
 }

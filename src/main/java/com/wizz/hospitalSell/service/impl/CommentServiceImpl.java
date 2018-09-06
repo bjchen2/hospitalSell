@@ -81,10 +81,10 @@ public class CommentServiceImpl implements CommentService {
                 //如果某条评论的用户信息缺失，直接跳过，即不添加该评论
                 continue;
             }
-            //将评论信息赋值给VO
-            BeanUtils.copyProperties(commentInfo, commentVO);
             //将用户信息赋值给VO
             BeanUtils.copyProperties(userInfo, commentVO);
+            //将评论信息赋值给VO，注意：这里赋值顺序不能换，因为他们有一个同名属性createTime
+            BeanUtils.copyProperties(commentInfo, commentVO);
             //添加进返回列表
             commentVOs.add(commentVO);
         }
