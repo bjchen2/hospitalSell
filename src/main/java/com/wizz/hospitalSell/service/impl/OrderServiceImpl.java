@@ -206,8 +206,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void commented(String orderId, String openid) {
         OrderDto orderDto = findOne(orderId);
-        //TODO
-        System.out.println("orderId=".concat(orderId).concat(", commentStatus=").concat(orderDto.getCommentStatus().toString()));
         if (orderDto == null) {
             log.error("[商品评价]订单不存在，orderId={}", orderId);
             throw new SellException(ResultEnum.ORDER_NOT_EXIST);

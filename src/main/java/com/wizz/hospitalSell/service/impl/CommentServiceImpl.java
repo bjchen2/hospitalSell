@@ -127,25 +127,34 @@ public class CommentServiceImpl implements CommentService {
         return findDtosByProductInfos(productInfos);
     }
 
-    @Override
+    //cache注解的方法要被重载不能private
     @Caching(evict = {
             @CacheEvict(cacheNames = "comment", key = "0"),
             @CacheEvict(cacheNames = "comment", key = "#commentInfo.productId")})
-    public CommentInfo create(CommentInfo commentInfo) {
+    public void preCreate(CommentInfo commentInfo) {
         if (!productInfoDao.existsById(commentInfo.getProductId())) {
             log.error("[商品评价]商品不存在，productId={}", commentInfo.getProductId());
             throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
         }
-        OrderDto orderDto = orderService.findOne(commentInfo.getOrderId());
-        if (!orderDto.getPayStatus().equals(PayStatusEnum.SUCCESS.getCode())) {
-            log.error("[商品评价]该订单未支付，不能评价，orderId={}", commentInfo.getOrderId());
-            throw new SellException(ResultEnum.ORDER_PAY_STATUS_ERROR);
-        }
-        //将订单的评论状态设为已评论
-        orderService.commented(commentInfo.getOrderId(), commentInfo.getUserOpenid());
         //设置评论主键
         commentInfo.setCommentId(KeyUtil.genUniqueKey());
-        return commentInfoRepository.save(commentInfo);
+    }
+
+    public void createAll(List<CommentInfo> commentInfos){
+        String orderId = commentInfos.get(0).getOrderId();
+        //查询订单是否支付
+        OrderDto orderDto = orderService.findOne(orderId);
+        if (!orderDto.getPayStatus().equals(PayStatusEnum.SUCCESS.getCode())) {
+            log.error("[商品评价]该订单未支付，不能评价，orderId={}", orderId);
+            throw new SellException(ResultEnum.ORDER_PAY_STATUS_ERROR);
+        }
+        for (CommentInfo commentInfo : commentInfos) {
+            preCreate(commentInfo);
+        }
+        //保存所有评论
+        commentInfoRepository.saveAll(commentInfos);
+        //将订单的评论状态设为已评论
+        orderService.commented(orderId, commentInfos.get(0).getUserOpenid());
     }
 
     @Override

@@ -15,6 +15,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 买家端评价
@@ -50,16 +52,20 @@ public class BuyerCommentController {
 
     //注意，作为接收Json的类（CommentForm），必须要有Get/Set方法
     @PostMapping
-    public ResultVO create(@Valid @RequestBody CommentForm commentForm, BindingResult bindingResult) {
+    public ResultVO create(@Valid @RequestBody List<CommentForm> commentForms, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             //表单校验有误
-            log.error("[创建订单]参数不正确，commentForm={}", commentForm);
+            log.error("[创建订单]参数不正确，commentForm={}", commentForms);
             throw new SellException(bindingResult.getFieldError() == null ? "参数不正确" : bindingResult.getFieldError().getDefaultMessage(),
                     ResultEnum.PARAM_ERROR.getCode());
         }
-        CommentInfo commentInfo = new CommentInfo();
-        BeanUtils.copyProperties(commentForm, commentInfo);
-        commentService.create(commentInfo);
+        List<CommentInfo> commentInfos = new ArrayList<>();
+        for (CommentForm commentForm : commentForms){
+            CommentInfo commentInfo = new CommentInfo();
+            BeanUtils.copyProperties(commentForm, commentInfo);
+            commentInfos.add(commentInfo);
+        }
+        commentService.createAll(commentInfos);
         return ResultUtil.success();
     }
 }

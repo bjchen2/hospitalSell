@@ -10,7 +10,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created By Cx On 2018/8/5 18:59
@@ -50,6 +51,8 @@ public class CommentServiceImplTest {
         commentInfo.setProductId("2");
         commentInfo.setQualityScore(1);
         commentInfo.setUserOpenid("1");
-        System.out.println(commentService.create(commentInfo));
+        List<CommentInfo> commentInfos = new ArrayList<>();
+        commentInfos.add(commentInfo);
+        commentService.createAll(commentInfos);
     }
 }

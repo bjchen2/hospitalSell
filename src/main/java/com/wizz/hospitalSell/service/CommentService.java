@@ -36,7 +36,7 @@ public interface CommentService {
     /**
      * 创建新评论,此时需要将订单的评论状态改为已评论
      */
-    CommentInfo create(CommentInfo commentInfo);
+    void createAll(List<CommentInfo> commentInfos);
 
     /**
      * 通过productId，查询某商品额总评分
