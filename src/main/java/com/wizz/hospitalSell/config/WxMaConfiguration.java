@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 /**
+ * 引用github微信小程序开发轮子，这是轮子需要的配置类
  * 不能叫WxMaConfig，和cn.binarywang.wx.miniapp.config包冲突
  * Created By Cx On 2018/8/3 13:15
  */

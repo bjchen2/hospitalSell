@@ -32,7 +32,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 用户有关
+ * 后台管理员有关
  * Created By Cx On 2018/7/30 9:45
  */
 @Controller
@@ -53,7 +53,7 @@ public class AdminController {
     @GetMapping("/index")
     public ModelAndView index(HttpServletRequest request) {
         if (CookieUtil.getCookie(request, CookieConstant.TOKEN) != null) {
-            //如果cookie存在
+            //如果已登录，则直接进入订单页
             return new ModelAndView("redirect:" + projectConfig.getSell() + "/seller/order/list");
         }
         return new ModelAndView("common/index");
